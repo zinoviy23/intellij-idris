@@ -1,4 +1,4 @@
-package com.github.zinoviy23.intellijidris
+package com.github.zinoviy23.intellijIdris
 
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.psi.xml.XmlFile

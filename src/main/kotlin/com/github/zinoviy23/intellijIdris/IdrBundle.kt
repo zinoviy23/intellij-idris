@@ -1,13 +1,13 @@
-package com.github.zinoviy23.intellijidris
+package com.github.zinoviy23.intellijIdris
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
 
 @NonNls
-private const val BUNDLE = "messages.MyBundle"
+private const val BUNDLE = "messages.IdrBundle"
 
-object MyBundle : DynamicBundle(BUNDLE) {
+object IdrBundle : DynamicBundle(BUNDLE) {
 
     @Suppress("SpreadOperator")
     @JvmStatic

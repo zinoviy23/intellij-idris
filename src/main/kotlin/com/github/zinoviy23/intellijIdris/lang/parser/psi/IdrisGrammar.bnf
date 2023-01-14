@@ -1,0 +1,75 @@
+{
+    parserClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="IdrPsi"
+    psiImplClassSuffix="Impl"
+    psiPackage="com.github.zinoviy23.intellijIdris.lang.parser.psi"
+    psiImplPackage="com.github.zinoviy23.intellijIdris.lang.parser.psi.impl"
+
+    elementTypeHolderClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes"
+    elementTypeClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrElementType"
+    tokenTypeClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenType"
+
+    extends(".*expression")=expression
+    extends(".*type_specification_element")=type_specification_element
+}
+
+file ::= top_level (EOL+ top_level)* |
+
+private top_level ::= (function_specification | function_match)
+
+function_specification ::= IDENTIFICATOR COLON_SIGN type_specification
+{
+    pin = 2
+}
+
+
+type_specification ::= type_specification_element (TYPE_SIGN type_specification_element)*
+
+type_specification_element ::= bounded_type_specification_element | anonymous_type_specification_element
+
+anonymous_type_specification_element ::= expression
+bounded_type_specification_element ::= LPAR IDENTIFICATOR COLON_SIGN expression RPAR {
+    pin = 3
+}
+
+function_match ::= IDENTIFICATOR (expression)* EQ_SIGN expression {
+    pin = 3
+    recoverWhile = function_match_recover
+}
+private function_match_recover ::= !EOL
+
+expression ::= operator_expression |
+               function_call_expression |
+               list_literal_expression |
+               if_expression |
+               case_expression |
+               integer_literal_expression |
+               id_expression |
+               paren_expression
+
+id_expression ::= IDENTIFICATOR
+
+integer_literal_expression ::= INTEGER_LITERAL
+
+paren_expression ::= LPAR expression RPAR {
+    pin = 1
+}
+
+if_expression ::= KW_IF expression KW_THEN expression KW_ELSE expression {
+    pin = 1
+}
+
+case_expression ::= KW_CASE expression KW_OF expression expression ARROW_SIGN expression {
+    pin = 1
+}
+
+list_literal_expression ::= LBRACKET expression (COMMA expression)* RBRACKET {
+    pin = 1
+}
+
+operator_expression ::= expression OPERATOR expression (OPERATOR expression)*
+
+function_call_expression ::= expression (expression)+

@@ -1,18 +1,29 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.zinoviy23.intellijidris</id>
-    <name>intellij-idris</name>
+    <id>com.github.zinoviy23.intellijIdris</id>
+    <name>Idris Language</name>
     <vendor>zinoviy23</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.zinoviy23.intellijidris.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.zinoviy23.intellijidris.services.MyProjectService"/>
+        <fileType name="Idris File"
+                  implementationClass="com.github.zinoviy23.intellijIdris.lang.IdrFileType"
+                  fieldName="INSTANCE"
+                  language="Idris"
+                  extensions="idr"/>
+
+        <lang.parserDefinition language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.lang.parser.IdrParserDefinition"/>
+
+        <lang.syntaxHighlighterFactory language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.highlighting.IdrSyntaxHighlighterFactory"/>
+
+        
+        <applicationService serviceImplementation="com.github.zinoviy23.intellijIdris.services.MyApplicationService"/>
+        <projectService serviceImplementation="com.github.zinoviy23.intellijIdris.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.zinoviy23.intellijidris.listeners.MyProjectManagerListener"
+        <listener class="com.github.zinoviy23.intellijIdris.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 </idea-plugin>
