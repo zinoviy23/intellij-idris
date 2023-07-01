@@ -18,7 +18,10 @@
         <lang.syntaxHighlighterFactory language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.highlighting.IdrSyntaxHighlighterFactory"/>
         <annotator language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.highlighting.IdrSyntaxAnnotator"/>
 
-        
+        <lang.braceMatcher language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.editor.IdrBraceMatcher"/>
+        <lang.quoteHandler language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.editor.IdrQuoteHandler"/>
+        <lang.commenter language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.editor.IdrCommenter"/>
+
         <applicationService serviceImplementation="com.github.zinoviy23.intellijIdris.services.MyApplicationService"/>
         <projectService serviceImplementation="com.github.zinoviy23.intellijIdris.services.MyProjectService"/>
     </extensions>
