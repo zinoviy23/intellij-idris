@@ -97,6 +97,12 @@ PLACEHOLDER=_
     "if"                 { return KW_IF; }
     "then"               { return KW_THEN; }
     "else"               { return KW_ELSE; }
+    "where"              { return KW_WHERE; }
+    "let"                { return KW_LET; }
+    "in"                 { return KW_IN; }
+    "export"             { return KW_EXPORT; }
+    "partial"            { return KW_PARTIAL; }
+    "total"              { return KW_TOTAL; }
     {VARIDREGEXP}        { yybegin(IN_ID); return IDENTIFICATOR; }
     {INTEGER_LIT}        { return INTEGER_LITERAL; }
     "\""                 { yybegin(IN_STRING_LITERAL); return STRING_QUOTE; }
@@ -109,6 +115,7 @@ PLACEHOLDER=_
     ","                  { return COMMA; }
     "["                  { return LBRACKET; }
     "]"                  { return RBRACKET; }
+    "\\"                 { return BACKSLASH; }
     {PLACEHOLDER}        { return PLACEHOLDER; }
     {OPERATOR}           { return OPERATOR; }
     [^]                  { return BAD_CHARACTER; }

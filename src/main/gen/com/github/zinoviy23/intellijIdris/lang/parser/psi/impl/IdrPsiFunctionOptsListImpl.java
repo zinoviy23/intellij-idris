@@ -11,14 +11,14 @@ import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiExpressionImpl extends ASTWrapperPsiElement implements IdrPsiExpression {
+public class IdrPsiFunctionOptsListImpl extends ASTWrapperPsiElement implements IdrPsiFunctionOptsList {
 
-  public IdrPsiExpressionImpl(@NotNull ASTNode node) {
+  public IdrPsiFunctionOptsListImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitExpression(this);
+    visitor.visitFunctionOptsList(this);
   }
 
   @Override

@@ -10,4 +10,7 @@ public interface IdrPsiFunctionMatch extends PsiElement {
   @NotNull
   List<IdrPsiExpression> getExpressionList();
 
+  @Nullable
+  IdrPsiFunctionWhereBlock getFunctionWhereBlock();
+
 }

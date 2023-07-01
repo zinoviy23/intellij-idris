@@ -45,6 +45,12 @@ internal class IdrSyntaxHighlighter : SyntaxHighlighterBase() {
                 KW_PREFIX,
                 KW_INFIXL,
                 KW_INFIXR,
+                KW_WHERE,
+                KW_LET,
+                KW_IN,
+                KW_EXPORT,
+                KW_TOTAL,
+                KW_PARTIAL,
             )
             fillMap(map, LINE_COMMENT, LINE_COMMENT_START, LINE_COMMENT_TEXT)
             fillMap(map, DOC_COMMENT, DOC_COMMENT_TEXT, DOC_COMMENT_START)

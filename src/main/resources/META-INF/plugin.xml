@@ -16,6 +16,7 @@
         <lang.parserDefinition language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.lang.parser.IdrParserDefinition"/>
 
         <lang.syntaxHighlighterFactory language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.highlighting.IdrSyntaxHighlighterFactory"/>
+        <annotator language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.highlighting.IdrSyntaxAnnotator"/>
 
         
         <applicationService serviceImplementation="com.github.zinoviy23.intellijIdris.services.MyApplicationService"/>

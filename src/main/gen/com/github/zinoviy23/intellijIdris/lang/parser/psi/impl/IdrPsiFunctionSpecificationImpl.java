@@ -29,6 +29,12 @@ public class IdrPsiFunctionSpecificationImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
+  public IdrPsiFunctionOptsList getFunctionOptsList() {
+    return findChildByClass(IdrPsiFunctionOptsList.class);
+  }
+
+  @Override
+  @Nullable
   public IdrPsiTypeSpecification getTypeSpecification() {
     return findChildByClass(IdrPsiTypeSpecification.class);
   }

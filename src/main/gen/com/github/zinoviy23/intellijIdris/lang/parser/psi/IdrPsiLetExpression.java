@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiFunctionSpecification extends PsiElement {
+public interface IdrPsiLetExpression extends IdrPsiExpression {
 
   @Nullable
-  IdrPsiFunctionOptsList getFunctionOptsList();
+  IdrPsiExpression getExpression();
 
-  @Nullable
-  IdrPsiTypeSpecification getTypeSpecification();
+  @NotNull
+  List<IdrPsiLetEntry> getLetEntryList();
 
 }

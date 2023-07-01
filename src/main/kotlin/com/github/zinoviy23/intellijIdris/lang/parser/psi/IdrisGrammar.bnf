@@ -38,10 +38,14 @@ directive ::= DIRECTIVE_START DIRECTIVE_TYPE DIRECTIVE_CONTENT {
     pin = 1
 }
 
-function_specification ::= IDENTIFICATOR COLON_SIGN type_specification
+function_specification ::= [function_opts_list indent?] IDENTIFICATOR COLON_SIGN type_specification
 {
-    pin = 2
+    pin = 3
 }
+
+function_opts_list ::= function_opt (indent? function_opt)*
+
+private function_opt ::= (KW_EXPORT | KW_TOTAL | KW_PARTIAL)
 
 identificator_reference ::= IDENTIFICATOR (IDENTIFICATOR_SEP IDENTIFICATOR)*
 {
@@ -54,19 +58,27 @@ operator_declaration ::= (KW_INFIX | KW_PREFIX | KW_INFIXL | KW_INFIXR) INTEGER_
 
 operator_list ::= OPERATOR (COMMA OPERATOR)*
 
-type_specification ::= expression
+type_specification ::= constraint_list? expression
 
-function_match ::= IDENTIFICATOR (simple_expression)* EQ_SIGN indent? expression {
+constraint_list ::= expression ARROW_SIGN
 
-//    recoverWhile = function_match_recover
+function_match ::= IDENTIFICATOR (simple_expression)* EQ_SIGN indent? expression [indent? function_where_block] {
+    pin=1
 }
-//private function_match_recover ::= !EOL
+
+function_where_block ::= KW_WHERE (indent (function_specification | function_match))*
 
 expression ::= type_expression |
                operator_expression |
                kw_expr |
                function_call_expression |
-               simple_expression
+               simple_expression |
+               lambda_expression
+{
+    recoverWhile = expression_recover
+}
+
+private expression_recover ::= !(EOL+ IDENTIFICATOR)
 
 simple_expression ::= list_literal_expression |
                       paren_expression |
@@ -76,8 +88,17 @@ simple_expression ::= list_literal_expression |
                       placeholder_expression
 
 private kw_expr ::= if_expression |
-                    case_expression
+                    case_expression |
+                    let_expression
 
+
+let_expression ::= KW_LET indent? let_entry (indent let_entry)* KW_IN indent? expression {
+    pin = 1
+}
+
+let_entry ::= IDENTIFICATOR EQ_SIGN expression {
+    pin = 2
+}
 
 type_expression ::= expression TYPE_SIGN expression (TYPE_SIGN expression)*
 
@@ -119,5 +140,9 @@ operator_expression ::= expression OPERATOR indent? expression (OPERATOR indent?
 function_call_expression ::= function_element (simple_expression)*
 
 private function_element ::= id_expression | paren_expression
+
+lambda_expression ::= BACKSLASH IDENTIFICATOR ARROW_SIGN expression {
+    pin = 2
+}
 
 private indent ::= EOL+ OPEN

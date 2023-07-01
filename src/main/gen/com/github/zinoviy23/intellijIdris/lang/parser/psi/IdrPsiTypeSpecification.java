@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface IdrPsiTypeSpecification extends PsiElement {
 
+  @Nullable
+  IdrPsiConstraintList getConstraintList();
+
   @NotNull
   IdrPsiExpression getExpression();
 

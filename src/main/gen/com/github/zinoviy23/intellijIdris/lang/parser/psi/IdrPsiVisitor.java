@@ -11,6 +11,10 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitExpression(o);
   }
 
+  public void visitConstraintList(@NotNull IdrPsiConstraintList o) {
+    visitPsiElement(o);
+  }
+
   public void visitDirective(@NotNull IdrPsiDirective o) {
     visitPsiElement(o);
   }
@@ -31,7 +35,15 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFunctionOptsList(@NotNull IdrPsiFunctionOptsList o) {
+    visitPsiElement(o);
+  }
+
   public void visitFunctionSpecification(@NotNull IdrPsiFunctionSpecification o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFunctionWhereBlock(@NotNull IdrPsiFunctionWhereBlock o) {
     visitPsiElement(o);
   }
 
@@ -52,6 +64,18 @@ public class IdrPsiVisitor extends PsiElementVisitor {
   }
 
   public void visitIntegerLiteralExpression(@NotNull IdrPsiIntegerLiteralExpression o) {
+    visitExpression(o);
+  }
+
+  public void visitLambdaExpression(@NotNull IdrPsiLambdaExpression o) {
+    visitExpression(o);
+  }
+
+  public void visitLetEntry(@NotNull IdrPsiLetEntry o) {
+    visitPsiElement(o);
+  }
+
+  public void visitLetExpression(@NotNull IdrPsiLetExpression o) {
     visitExpression(o);
   }
 

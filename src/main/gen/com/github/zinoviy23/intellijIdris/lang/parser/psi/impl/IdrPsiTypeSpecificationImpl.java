@@ -28,6 +28,12 @@ public class IdrPsiTypeSpecificationImpl extends ASTWrapperPsiElement implements
   }
 
   @Override
+  @Nullable
+  public IdrPsiConstraintList getConstraintList() {
+    return findChildByClass(IdrPsiConstraintList.class);
+  }
+
+  @Override
   @NotNull
   public IdrPsiExpression getExpression() {
     return findNotNullChildByClass(IdrPsiExpression.class);

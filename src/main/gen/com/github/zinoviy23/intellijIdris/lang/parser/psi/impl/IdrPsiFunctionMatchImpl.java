@@ -33,4 +33,10 @@ public class IdrPsiFunctionMatchImpl extends ASTWrapperPsiElement implements Idr
     return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiExpression.class);
   }
 
+  @Override
+  @Nullable
+  public IdrPsiFunctionWhereBlock getFunctionWhereBlock() {
+    return findChildByClass(IdrPsiFunctionWhereBlock.class);
+  }
+
 }

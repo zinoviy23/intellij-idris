@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiFunctionSpecification extends PsiElement {
-
-  @Nullable
-  IdrPsiFunctionOptsList getFunctionOptsList();
-
-  @Nullable
-  IdrPsiTypeSpecification getTypeSpecification();
+public interface IdrPsiFunctionOptsList extends PsiElement {
 
 }

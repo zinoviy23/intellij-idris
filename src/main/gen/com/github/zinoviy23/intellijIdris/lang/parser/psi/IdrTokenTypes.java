@@ -9,17 +9,23 @@ import com.github.zinoviy23.intellijIdris.lang.parser.psi.impl.*;
 public interface IdrTokenTypes {
 
   IElementType CASE_EXPRESSION = new IdrElementType("CASE_EXPRESSION");
+  IElementType CONSTRAINT_LIST = new IdrElementType("CONSTRAINT_LIST");
   IElementType DIRECTIVE = new IdrElementType("DIRECTIVE");
   IElementType EXPRESSION = new IdrElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new IdrElementType("EXPRESSION_LIST");
   IElementType FUNCTION_CALL_EXPRESSION = new IdrElementType("FUNCTION_CALL_EXPRESSION");
   IElementType FUNCTION_MATCH = new IdrElementType("FUNCTION_MATCH");
+  IElementType FUNCTION_OPTS_LIST = new IdrElementType("FUNCTION_OPTS_LIST");
   IElementType FUNCTION_SPECIFICATION = new IdrElementType("FUNCTION_SPECIFICATION");
+  IElementType FUNCTION_WHERE_BLOCK = new IdrElementType("FUNCTION_WHERE_BLOCK");
   IElementType IDENTIFICATOR_REFERENCE = new IdrElementType("IDENTIFICATOR_REFERENCE");
   IElementType ID_EXPRESSION = new IdrElementType("ID_EXPRESSION");
   IElementType IF_EXPRESSION = new IdrElementType("IF_EXPRESSION");
   IElementType IMPORT_STATEMENT = new IdrElementType("IMPORT_STATEMENT");
   IElementType INTEGER_LITERAL_EXPRESSION = new IdrElementType("INTEGER_LITERAL_EXPRESSION");
+  IElementType LAMBDA_EXPRESSION = new IdrElementType("LAMBDA_EXPRESSION");
+  IElementType LET_ENTRY = new IdrElementType("LET_ENTRY");
+  IElementType LET_EXPRESSION = new IdrElementType("LET_EXPRESSION");
   IElementType LIST_LITERAL_EXPRESSION = new IdrElementType("LIST_LITERAL_EXPRESSION");
   IElementType MODULE_STATEMENT = new IdrElementType("MODULE_STATEMENT");
   IElementType OPERATOR_DECLARATION = new IdrElementType("OPERATOR_DECLARATION");
@@ -34,6 +40,7 @@ public interface IdrTokenTypes {
   IElementType TYPE_SPECIFICATION = new IdrElementType("TYPE_SPECIFICATION");
 
   IElementType ARROW_SIGN = new IdrTokenType("ARROW_SIGN");
+  IElementType BACKSLASH = new IdrTokenType("BACKSLASH");
   IElementType COLON_SIGN = new IdrTokenType("COLON_SIGN");
   IElementType COMMA = new IdrTokenType("COMMA");
   IElementType DIRECTIVE_CONTENT = new IdrTokenType("DIRECTIVE_CONTENT");
@@ -48,15 +55,21 @@ public interface IdrTokenTypes {
   IElementType INTEGER_LITERAL = new IdrTokenType("INTEGER_LITERAL");
   IElementType KW_CASE = new IdrTokenType("KW_CASE");
   IElementType KW_ELSE = new IdrTokenType("KW_ELSE");
+  IElementType KW_EXPORT = new IdrTokenType("KW_EXPORT");
   IElementType KW_IF = new IdrTokenType("KW_IF");
   IElementType KW_IMPORT = new IdrTokenType("KW_IMPORT");
+  IElementType KW_IN = new IdrTokenType("KW_IN");
   IElementType KW_INFIX = new IdrTokenType("KW_INFIX");
   IElementType KW_INFIXL = new IdrTokenType("KW_INFIXL");
   IElementType KW_INFIXR = new IdrTokenType("KW_INFIXR");
+  IElementType KW_LET = new IdrTokenType("KW_LET");
   IElementType KW_MODULE = new IdrTokenType("KW_MODULE");
   IElementType KW_OF = new IdrTokenType("KW_OF");
+  IElementType KW_PARTIAL = new IdrTokenType("KW_PARTIAL");
   IElementType KW_PREFIX = new IdrTokenType("KW_PREFIX");
   IElementType KW_THEN = new IdrTokenType("KW_THEN");
+  IElementType KW_TOTAL = new IdrTokenType("KW_TOTAL");
+  IElementType KW_WHERE = new IdrTokenType("KW_WHERE");
   IElementType LBRACKET = new IdrTokenType("LBRACKET");
   IElementType LINE_COMMENT_START = new IdrTokenType("--");
   IElementType LINE_COMMENT_TEXT = new IdrTokenType("LINE_COMMENT_TEXT");
@@ -76,8 +89,14 @@ public interface IdrTokenTypes {
       if (type == CASE_EXPRESSION) {
         return new IdrPsiCaseExpressionImpl(node);
       }
+      else if (type == CONSTRAINT_LIST) {
+        return new IdrPsiConstraintListImpl(node);
+      }
       else if (type == DIRECTIVE) {
         return new IdrPsiDirectiveImpl(node);
+      }
+      else if (type == EXPRESSION) {
+        return new IdrPsiExpressionImpl(node);
       }
       else if (type == EXPRESSION_LIST) {
         return new IdrPsiExpressionListImpl(node);
@@ -88,8 +107,14 @@ public interface IdrTokenTypes {
       else if (type == FUNCTION_MATCH) {
         return new IdrPsiFunctionMatchImpl(node);
       }
+      else if (type == FUNCTION_OPTS_LIST) {
+        return new IdrPsiFunctionOptsListImpl(node);
+      }
       else if (type == FUNCTION_SPECIFICATION) {
         return new IdrPsiFunctionSpecificationImpl(node);
+      }
+      else if (type == FUNCTION_WHERE_BLOCK) {
+        return new IdrPsiFunctionWhereBlockImpl(node);
       }
       else if (type == IDENTIFICATOR_REFERENCE) {
         return new IdrPsiIdentificatorReferenceImpl(node);
@@ -105,6 +130,15 @@ public interface IdrTokenTypes {
       }
       else if (type == INTEGER_LITERAL_EXPRESSION) {
         return new IdrPsiIntegerLiteralExpressionImpl(node);
+      }
+      else if (type == LAMBDA_EXPRESSION) {
+        return new IdrPsiLambdaExpressionImpl(node);
+      }
+      else if (type == LET_ENTRY) {
+        return new IdrPsiLetEntryImpl(node);
+      }
+      else if (type == LET_EXPRESSION) {
+        return new IdrPsiLetExpressionImpl(node);
       }
       else if (type == LIST_LITERAL_EXPRESSION) {
         return new IdrPsiListLiteralExpressionImpl(node);
