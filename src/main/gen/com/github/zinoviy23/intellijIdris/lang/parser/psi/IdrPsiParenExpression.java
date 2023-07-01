@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface IdrPsiParenExpression extends IdrPsiExpression {
 
   @Nullable
-  IdrPsiExpression getExpression();
+  IdrPsiParenExpressionEnd getParenExpressionEnd();
 
 }

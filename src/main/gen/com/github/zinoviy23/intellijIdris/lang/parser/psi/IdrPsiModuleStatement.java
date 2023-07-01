@@ -5,6 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiTypeSpecificationElement extends PsiElement {
+public interface IdrPsiModuleStatement extends PsiElement {
+
+  @Nullable
+  IdrPsiIdentificatorReference getIdentificatorReference();
 
 }

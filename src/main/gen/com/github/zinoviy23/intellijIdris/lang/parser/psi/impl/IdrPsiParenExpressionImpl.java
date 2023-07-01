@@ -29,8 +29,8 @@ public class IdrPsiParenExpressionImpl extends IdrPsiExpressionImpl implements I
 
   @Override
   @Nullable
-  public IdrPsiExpression getExpression() {
-    return findChildByClass(IdrPsiExpression.class);
+  public IdrPsiParenExpressionEnd getParenExpressionEnd() {
+    return findChildByClass(IdrPsiParenExpressionEnd.class);
   }
 
 }

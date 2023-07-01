@@ -10,27 +10,21 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiAnonymousTypeSpecificationElementImpl extends IdrPsiTypeSpecificationElementImpl implements IdrPsiAnonymousTypeSpecificationElement {
+public abstract class IdrPsiSimpleExpressionImpl extends IdrPsiExpressionImpl implements IdrPsiSimpleExpression {
 
-  public IdrPsiAnonymousTypeSpecificationElementImpl(@NotNull ASTNode node) {
+  public IdrPsiSimpleExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitAnonymousTypeSpecificationElement(this);
+    visitor.visitSimpleExpression(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof IdrPsiVisitor) accept((IdrPsiVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public IdrPsiExpression getExpression() {
-    return findNotNullChildByClass(IdrPsiExpression.class);
   }
 
 }

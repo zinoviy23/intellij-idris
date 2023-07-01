@@ -29,8 +29,8 @@ public class IdrPsiTypeSpecificationImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public List<IdrPsiTypeSpecificationElement> getTypeSpecificationElementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiTypeSpecificationElement.class);
+  public IdrPsiExpression getExpression() {
+    return findNotNullChildByClass(IdrPsiExpression.class);
   }
 
 }

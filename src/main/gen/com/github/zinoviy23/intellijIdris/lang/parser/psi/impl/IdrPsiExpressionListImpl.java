@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiBoundedTypeSpecificationElementImpl extends IdrPsiTypeSpecificationElementImpl implements IdrPsiBoundedTypeSpecificationElement {
+public class IdrPsiExpressionListImpl extends ASTWrapperPsiElement implements IdrPsiExpressionList {
 
-  public IdrPsiBoundedTypeSpecificationElementImpl(@NotNull ASTNode node) {
+  public IdrPsiExpressionListImpl(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitBoundedTypeSpecificationElement(this);
+    visitor.visitExpressionList(this);
   }
 
   @Override
@@ -28,9 +28,9 @@ public class IdrPsiBoundedTypeSpecificationElementImpl extends IdrPsiTypeSpecifi
   }
 
   @Override
-  @Nullable
-  public IdrPsiExpression getExpression() {
-    return findChildByClass(IdrPsiExpression.class);
+  @NotNull
+  public List<IdrPsiExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiExpression.class);
   }
 
 }

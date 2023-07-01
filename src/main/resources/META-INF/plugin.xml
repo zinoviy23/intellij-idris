@@ -22,8 +22,14 @@
         <projectService serviceImplementation="com.github.zinoviy23.intellijIdris.services.MyProjectService"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.zinoviy23.intellijIdris.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+<!--    <applicationListeners>-->
+<!--        <listener class="com.github.zinoviy23.intellijIdris.listeners.MyProjectManagerListener"-->
+<!--                  topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
+<!--    </applicationListeners>-->
+    <actions>
+        <action id="AddIdrisStdLibraryAction"
+                class="com.github.zinoviy23.intellijIdris.actions.AddIdrisStdLibraryAction"/>
+    </actions>
+
+    <resource-bundle>messages.IdrBundle</resource-bundle>
 </idea-plugin>

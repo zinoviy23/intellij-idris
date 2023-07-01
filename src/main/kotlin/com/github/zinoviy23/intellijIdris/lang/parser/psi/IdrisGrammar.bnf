@@ -13,52 +13,96 @@
     tokenTypeClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenType"
 
     extends(".*expression")=expression
-    extends(".*type_specification_element")=type_specification_element
+
+    tokens=[
+        LINE_COMMENT_START="--"
+        LINE_COMMENT_TEXT="LINE_COMMENT_TEXT"
+        DOC_COMMENT_START="|||"
+        DOC_COMMENT_TEXT="DOC_COMMENT_TEXT"
+    ]
 }
 
-file ::= top_level (EOL+ top_level)* |
+file ::= (module_statement EOL+)? top_level ((EOL+ top_level) | EOL+ <<eof>> | indent)*
 
-private top_level ::= (function_specification | function_match)
+private top_level ::= directive | import_statement | operator_declaration | function_specification | function_match
+
+module_statement ::= KW_MODULE identificator_reference {
+    pin = 1
+}
+
+import_statement ::= KW_IMPORT identificator_reference {
+    pin = 1
+}
+
+directive ::= DIRECTIVE_START DIRECTIVE_TYPE DIRECTIVE_CONTENT {
+    pin = 1
+}
 
 function_specification ::= IDENTIFICATOR COLON_SIGN type_specification
 {
     pin = 2
 }
 
-
-type_specification ::= type_specification_element (TYPE_SIGN type_specification_element)*
-
-type_specification_element ::= bounded_type_specification_element | anonymous_type_specification_element
-
-anonymous_type_specification_element ::= expression
-bounded_type_specification_element ::= LPAR IDENTIFICATOR COLON_SIGN expression RPAR {
-    pin = 3
-}
-
-function_match ::= IDENTIFICATOR (expression)* EQ_SIGN expression {
-    pin = 3
-    recoverWhile = function_match_recover
-}
-private function_match_recover ::= !EOL
-
-expression ::= operator_expression |
-               function_call_expression |
-               list_literal_expression |
-               if_expression |
-               case_expression |
-               integer_literal_expression |
-               id_expression |
-               paren_expression
-
-id_expression ::= IDENTIFICATOR
-
-integer_literal_expression ::= INTEGER_LITERAL
-
-paren_expression ::= LPAR expression RPAR {
+identificator_reference ::= IDENTIFICATOR (IDENTIFICATOR_SEP IDENTIFICATOR)*
+{
     pin = 1
 }
 
-if_expression ::= KW_IF expression KW_THEN expression KW_ELSE expression {
+operator_declaration ::= (KW_INFIX | KW_PREFIX | KW_INFIXL | KW_INFIXR) INTEGER_LITERAL operator_list {
+    pin = 1
+}
+
+operator_list ::= OPERATOR (COMMA OPERATOR)*
+
+type_specification ::= expression
+
+function_match ::= IDENTIFICATOR (simple_expression)* EQ_SIGN indent? expression {
+
+//    recoverWhile = function_match_recover
+}
+//private function_match_recover ::= !EOL
+
+expression ::= type_expression |
+               operator_expression |
+               kw_expr |
+               function_call_expression |
+               simple_expression
+
+simple_expression ::= list_literal_expression |
+                      paren_expression |
+                      id_expression |
+                      integer_literal_expression |
+                      string_literal_expression |
+                      placeholder_expression
+
+private kw_expr ::= if_expression |
+                    case_expression
+
+
+type_expression ::= expression TYPE_SIGN expression (TYPE_SIGN expression)*
+
+id_expression ::= IDENTIFICATOR
+
+placeholder_expression ::= PLACEHOLDER
+
+integer_literal_expression ::= INTEGER_LITERAL
+
+string_literal_expression ::= STRING_QUOTE STRING_CONTENT? STRING_QUOTE {
+    pin = 1
+}
+
+paren_expression ::= LPAR EOL* paren_expression_end {
+    pin = 1
+}
+
+paren_expression_end ::= RPAR |
+                         IDENTIFICATOR COLON_SIGN expression RPAR |
+                         expression RPAR |
+                         expression_list RPAR
+
+expression_list ::= expression (COMMA expression)+
+
+if_expression ::= KW_IF indent* expression indent* KW_THEN indent* expression indent* KW_ELSE indent* expression [indent | EOL] {
     pin = 1
 }
 
@@ -66,10 +110,14 @@ case_expression ::= KW_CASE expression KW_OF expression expression ARROW_SIGN ex
     pin = 1
 }
 
-list_literal_expression ::= LBRACKET expression (COMMA expression)* RBRACKET {
+list_literal_expression ::= LBRACKET [expression (COMMA expression)*] RBRACKET {
     pin = 1
 }
 
-operator_expression ::= expression OPERATOR expression (OPERATOR expression)*
+operator_expression ::= expression OPERATOR indent? expression (OPERATOR indent? expression)*
 
-function_call_expression ::= expression (expression)+
+function_call_expression ::= function_element (simple_expression)*
+
+private function_element ::= id_expression | paren_expression
+
+private indent ::= EOL+ OPEN
