@@ -72,6 +72,8 @@ PLACEHOLDER=_
 %state IN_STRING_LITERAL
 %state IN_OPEN
 %state IN_LINE
+%state IN_ESCAPED_NAME
+%state IN_CHAR_LITERAL
 
 %%
 <YYINITIAL> {
@@ -103,9 +105,12 @@ PLACEHOLDER=_
     "export"             { return KW_EXPORT; }
     "partial"            { return KW_PARTIAL; }
     "total"              { return KW_TOTAL; }
+    "data"               { return KW_DATA; }
     {VARIDREGEXP}        { yybegin(IN_ID); return IDENTIFICATOR; }
     {INTEGER_LIT}        { return INTEGER_LITERAL; }
     "\""                 { yybegin(IN_STRING_LITERAL); return STRING_QUOTE; }
+    "`"                  { yybegin(IN_ESCAPED_NAME); return ESCAPED_NAME_QUOTE; }
+    "'"                  { yybegin(IN_CHAR_LITERAL); return CHAR_QUOTE; }
     "->"                 { return TYPE_SIGN; }
     "=>"                 { return ARROW_SIGN; }
     "="                  { return EQ_SIGN; }
@@ -116,6 +121,8 @@ PLACEHOLDER=_
     "["                  { return LBRACKET; }
     "]"                  { return RBRACKET; }
     "\\"                 { return BACKSLASH; }
+    "|"                  { return OPT_SEP; }
+
     {PLACEHOLDER}        { return PLACEHOLDER; }
     {OPERATOR}           { return OPERATOR; }
     [^]                  { return BAD_CHARACTER; }
@@ -171,6 +178,21 @@ PLACEHOLDER=_
     "\""         { yybegin(IN_LINE); return STRING_QUOTE; }
     [^\n\r\"]+   { return STRING_CONTENT; }
 }
+
+<IN_ESCAPED_NAME> {
+    {EOL}            { yybegin(YYINITIAL); return EOL; }
+    {WHITE_SPACE}    { yybegin(IN_LINE); return BAD_CHARACTER; }
+    "`"              { yybegin(IN_LINE); return ESCAPED_NAME_QUOTE; }
+    [^\n\r\`]+       { return ESCAPED_NAME; }
+}
+
+<IN_CHAR_LITERAL> {
+    {EOL}      { yybegin(YYINITIAL); return EOL; }
+    "'"        { yybegin(IN_LINE); return CHAR_QUOTE; }
+    [^\n\r']   { return CHAR_CONTENT; }
+}
+
+
 
 <IN_OPEN> {
     [^]   { yypushback(1); yybegin(IN_LINE); return OPEN; }

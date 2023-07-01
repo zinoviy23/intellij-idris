@@ -36,11 +36,25 @@ public class IdrParser implements PsiParser, LightPsiParser {
   }
 
   public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
-    create_token_set_(CASE_EXPRESSION, EXPRESSION, FUNCTION_CALL_EXPRESSION, ID_EXPRESSION,
-      IF_EXPRESSION, INTEGER_LITERAL_EXPRESSION, LAMBDA_EXPRESSION, LET_EXPRESSION,
-      LIST_LITERAL_EXPRESSION, OPERATOR_EXPRESSION, PAREN_EXPRESSION, PLACEHOLDER_EXPRESSION,
-      SIMPLE_EXPRESSION, STRING_LITERAL_EXPRESSION, TYPE_EXPRESSION),
+    create_token_set_(CASE_EXPRESSION, CHAR_LITERAL_EXPRESSION, ESCAPED_FUNCTION_CALL_EXPRESSION, EXPRESSION,
+      FUNCTION_CALL_EXPRESSION, ID_EXPRESSION, IF_EXPRESSION, INTEGER_LITERAL_EXPRESSION,
+      LAMBDA_EXPRESSION, LET_EXPRESSION, LIST_LITERAL_EXPRESSION, OPERATOR_EXPRESSION,
+      PAREN_EXPRESSION, PLACEHOLDER_EXPRESSION, SIMPLE_EXPRESSION, STRING_LITERAL_EXPRESSION,
+      TYPE_EXPRESSION),
   };
+
+  /* ********************************************************** */
+  // CHAR_QUOTE CHAR_CONTENT CHAR_QUOTE
+  public static boolean char_literal_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "char_literal_expression")) return false;
+    if (!nextTokenIs(b, CHAR_QUOTE)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, CHAR_LITERAL_EXPRESSION, null);
+    r = consumeTokens(b, 1, CHAR_QUOTE, CHAR_CONTENT, CHAR_QUOTE);
+    p = r; // pin = 1
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
 
   /* ********************************************************** */
   // expression ARROW_SIGN
@@ -55,6 +69,114 @@ public class IdrParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // KW_DATA IDENTIFICATOR (IDENTIFICATOR)* EQ_SIGN indent? data_declaration_variant (indent? OPT_SEP indent? data_declaration_variant)*
+  public static boolean data_declaration(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration")) return false;
+    if (!nextTokenIs(b, KW_DATA)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, DATA_DECLARATION, null);
+    r = consumeTokens(b, 1, KW_DATA, IDENTIFICATOR);
+    p = r; // pin = 1
+    r = r && report_error_(b, data_declaration_2(b, l + 1));
+    r = p && report_error_(b, consumeToken(b, EQ_SIGN)) && r;
+    r = p && report_error_(b, data_declaration_4(b, l + 1)) && r;
+    r = p && report_error_(b, data_declaration_variant(b, l + 1)) && r;
+    r = p && data_declaration_6(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // (IDENTIFICATOR)*
+  private static boolean data_declaration_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, IDENTIFICATOR)) break;
+      if (!empty_element_parsed_guard_(b, "data_declaration_2", c)) break;
+    }
+    return true;
+  }
+
+  // indent?
+  private static boolean data_declaration_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration_4")) return false;
+    indent(b, l + 1);
+    return true;
+  }
+
+  // (indent? OPT_SEP indent? data_declaration_variant)*
+  private static boolean data_declaration_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration_6")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!data_declaration_6_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "data_declaration_6", c)) break;
+    }
+    return true;
+  }
+
+  // indent? OPT_SEP indent? data_declaration_variant
+  private static boolean data_declaration_6_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration_6_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = data_declaration_6_0_0(b, l + 1);
+    r = r && consumeToken(b, OPT_SEP);
+    r = r && data_declaration_6_0_2(b, l + 1);
+    r = r && data_declaration_variant(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // indent?
+  private static boolean data_declaration_6_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration_6_0_0")) return false;
+    indent(b, l + 1);
+    return true;
+  }
+
+  // indent?
+  private static boolean data_declaration_6_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration_6_0_2")) return false;
+    indent(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFICATOR (simple_expression)*
+  public static boolean data_declaration_variant(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration_variant")) return false;
+    if (!nextTokenIs(b, IDENTIFICATOR)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENTIFICATOR);
+    r = r && data_declaration_variant_1(b, l + 1);
+    exit_section_(b, m, DATA_DECLARATION_VARIANT, r);
+    return r;
+  }
+
+  // (simple_expression)*
+  private static boolean data_declaration_variant_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration_variant_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!data_declaration_variant_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "data_declaration_variant_1", c)) break;
+    }
+    return true;
+  }
+
+  // (simple_expression)
+  private static boolean data_declaration_variant_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "data_declaration_variant_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = simple_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // DIRECTIVE_START DIRECTIVE_TYPE DIRECTIVE_CONTENT
   public static boolean directive(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "directive")) return false;
@@ -62,6 +184,19 @@ public class IdrParser implements PsiParser, LightPsiParser {
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, DIRECTIVE, null);
     r = consumeTokens(b, 1, DIRECTIVE_START, DIRECTIVE_TYPE, DIRECTIVE_CONTENT);
+    p = r; // pin = 1
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  /* ********************************************************** */
+  // ESCAPED_NAME_QUOTE ESCAPED_NAME ESCAPED_NAME_QUOTE
+  public static boolean escaped_name_id(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "escaped_name_id")) return false;
+    if (!nextTokenIs(b, ESCAPED_NAME_QUOTE)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, ESCAPED_NAME_ID, null);
+    r = consumeTokens(b, 1, ESCAPED_NAME_QUOTE, ESCAPED_NAME, ESCAPED_NAME_QUOTE);
     p = r; // pin = 1
     exit_section_(b, l, m, r, p, null);
     return r || p;
@@ -835,12 +970,13 @@ public class IdrParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // directive | import_statement | operator_declaration | function_specification | function_match
+  // directive | import_statement | data_declaration | operator_declaration | function_specification | function_match
   static boolean top_level(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "top_level")) return false;
     boolean r;
     r = directive(b, l + 1);
     if (!r) r = import_statement(b, l + 1);
+    if (!r) r = data_declaration(b, l + 1);
     if (!r) r = operator_declaration(b, l + 1);
     if (!r) r = function_specification(b, l + 1);
     if (!r) r = function_match(b, l + 1);
@@ -869,12 +1005,13 @@ public class IdrParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // Expression root: expression
   // Operator priority table:
-  // 0: BINARY(type_expression)
-  // 1: BINARY(operator_expression)
-  // 2: ATOM(if_expression) ATOM(case_expression) ATOM(let_expression)
-  // 3: ATOM(function_call_expression)
-  // 4: ATOM(simple_expression)
-  // 5: ATOM(lambda_expression)
+  // 0: BINARY(escaped_function_call_expression)
+  // 1: BINARY(type_expression)
+  // 2: BINARY(operator_expression)
+  // 3: ATOM(if_expression) ATOM(case_expression) ATOM(let_expression)
+  // 4: ATOM(function_call_expression)
+  // 5: ATOM(simple_expression)
+  // 6: ATOM(lambda_expression)
   public static boolean expression(PsiBuilder b, int l, int g) {
     if (!recursion_guard_(b, l, "expression")) return false;
     addVariant(b, "<expression>");
@@ -897,13 +1034,17 @@ public class IdrParser implements PsiParser, LightPsiParser {
     boolean r = true;
     while (true) {
       Marker m = enter_section_(b, l, _LEFT_, null);
-      if (g < 0 && consumeTokenSmart(b, TYPE_SIGN)) {
-        r = report_error_(b, expression(b, l, 0));
+      if (g < 0 && escaped_name_id(b, l + 1)) {
+        r = expression(b, l, 0);
+        exit_section_(b, l, m, ESCAPED_FUNCTION_CALL_EXPRESSION, r, true, null);
+      }
+      else if (g < 1 && consumeTokenSmart(b, TYPE_SIGN)) {
+        r = report_error_(b, expression(b, l, 1));
         r = type_expression_1(b, l + 1) && r;
         exit_section_(b, l, m, TYPE_EXPRESSION, r, true, null);
       }
-      else if (g < 1 && operator_expression_0(b, l + 1)) {
-        r = report_error_(b, expression(b, l, 1));
+      else if (g < 2 && operator_expression_0(b, l + 1)) {
+        r = report_error_(b, expression(b, l, 2));
         r = operator_expression_1(b, l + 1) && r;
         exit_section_(b, l, m, OPERATOR_EXPRESSION, r, true, null);
       }
@@ -1188,6 +1329,7 @@ public class IdrParser implements PsiParser, LightPsiParser {
   //                       paren_expression |
   //                       id_expression |
   //                       integer_literal_expression |
+  //                       char_literal_expression |
   //                       string_literal_expression |
   //                       placeholder_expression
   public static boolean simple_expression(PsiBuilder b, int l) {
@@ -1198,6 +1340,7 @@ public class IdrParser implements PsiParser, LightPsiParser {
     if (!r) r = paren_expression(b, l + 1);
     if (!r) r = id_expression(b, l + 1);
     if (!r) r = integer_literal_expression(b, l + 1);
+    if (!r) r = char_literal_expression(b, l + 1);
     if (!r) r = string_literal_expression(b, l + 1);
     if (!r) r = placeholder_expression(b, l + 1);
     exit_section_(b, l, m, r, false, null);

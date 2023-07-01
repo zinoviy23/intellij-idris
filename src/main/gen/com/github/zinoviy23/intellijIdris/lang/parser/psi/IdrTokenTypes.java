@@ -9,8 +9,13 @@ import com.github.zinoviy23.intellijIdris.lang.parser.psi.impl.*;
 public interface IdrTokenTypes {
 
   IElementType CASE_EXPRESSION = new IdrElementType("CASE_EXPRESSION");
+  IElementType CHAR_LITERAL_EXPRESSION = new IdrElementType("CHAR_LITERAL_EXPRESSION");
   IElementType CONSTRAINT_LIST = new IdrElementType("CONSTRAINT_LIST");
+  IElementType DATA_DECLARATION = new IdrElementType("DATA_DECLARATION");
+  IElementType DATA_DECLARATION_VARIANT = new IdrElementType("DATA_DECLARATION_VARIANT");
   IElementType DIRECTIVE = new IdrElementType("DIRECTIVE");
+  IElementType ESCAPED_FUNCTION_CALL_EXPRESSION = new IdrElementType("ESCAPED_FUNCTION_CALL_EXPRESSION");
+  IElementType ESCAPED_NAME_ID = new IdrElementType("ESCAPED_NAME_ID");
   IElementType EXPRESSION = new IdrElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new IdrElementType("EXPRESSION_LIST");
   IElementType FUNCTION_CALL_EXPRESSION = new IdrElementType("FUNCTION_CALL_EXPRESSION");
@@ -41,6 +46,8 @@ public interface IdrTokenTypes {
 
   IElementType ARROW_SIGN = new IdrTokenType("ARROW_SIGN");
   IElementType BACKSLASH = new IdrTokenType("BACKSLASH");
+  IElementType CHAR_CONTENT = new IdrTokenType("CHAR_CONTENT");
+  IElementType CHAR_QUOTE = new IdrTokenType("CHAR_QUOTE");
   IElementType COLON_SIGN = new IdrTokenType("COLON_SIGN");
   IElementType COMMA = new IdrTokenType("COMMA");
   IElementType DIRECTIVE_CONTENT = new IdrTokenType("DIRECTIVE_CONTENT");
@@ -50,10 +57,13 @@ public interface IdrTokenTypes {
   IElementType DOC_COMMENT_TEXT = new IdrTokenType("DOC_COMMENT_TEXT");
   IElementType EOL = new IdrTokenType("EOL");
   IElementType EQ_SIGN = new IdrTokenType("EQ_SIGN");
+  IElementType ESCAPED_NAME = new IdrTokenType("ESCAPED_NAME");
+  IElementType ESCAPED_NAME_QUOTE = new IdrTokenType("ESCAPED_NAME_QUOTE");
   IElementType IDENTIFICATOR = new IdrTokenType("IDENTIFICATOR");
   IElementType IDENTIFICATOR_SEP = new IdrTokenType("IDENTIFICATOR_SEP");
   IElementType INTEGER_LITERAL = new IdrTokenType("INTEGER_LITERAL");
   IElementType KW_CASE = new IdrTokenType("KW_CASE");
+  IElementType KW_DATA = new IdrTokenType("KW_DATA");
   IElementType KW_ELSE = new IdrTokenType("KW_ELSE");
   IElementType KW_EXPORT = new IdrTokenType("KW_EXPORT");
   IElementType KW_IF = new IdrTokenType("KW_IF");
@@ -76,6 +86,7 @@ public interface IdrTokenTypes {
   IElementType LPAR = new IdrTokenType("LPAR");
   IElementType OPEN = new IdrTokenType("OPEN");
   IElementType OPERATOR = new IdrTokenType("OPERATOR");
+  IElementType OPT_SEP = new IdrTokenType("OPT_SEP");
   IElementType PLACEHOLDER = new IdrTokenType("PLACEHOLDER");
   IElementType RBRACKET = new IdrTokenType("RBRACKET");
   IElementType RPAR = new IdrTokenType("RPAR");
@@ -89,11 +100,26 @@ public interface IdrTokenTypes {
       if (type == CASE_EXPRESSION) {
         return new IdrPsiCaseExpressionImpl(node);
       }
+      else if (type == CHAR_LITERAL_EXPRESSION) {
+        return new IdrPsiCharLiteralExpressionImpl(node);
+      }
       else if (type == CONSTRAINT_LIST) {
         return new IdrPsiConstraintListImpl(node);
       }
+      else if (type == DATA_DECLARATION) {
+        return new IdrPsiDataDeclarationImpl(node);
+      }
+      else if (type == DATA_DECLARATION_VARIANT) {
+        return new IdrPsiDataDeclarationVariantImpl(node);
+      }
       else if (type == DIRECTIVE) {
         return new IdrPsiDirectiveImpl(node);
+      }
+      else if (type == ESCAPED_FUNCTION_CALL_EXPRESSION) {
+        return new IdrPsiEscapedFunctionCallExpressionImpl(node);
+      }
+      else if (type == ESCAPED_NAME_ID) {
+        return new IdrPsiEscapedNameIdImpl(node);
       }
       else if (type == EXPRESSION) {
         return new IdrPsiExpressionImpl(node);

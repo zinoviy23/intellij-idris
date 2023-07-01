@@ -11,11 +11,31 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitExpression(o);
   }
 
+  public void visitCharLiteralExpression(@NotNull IdrPsiCharLiteralExpression o) {
+    visitExpression(o);
+  }
+
   public void visitConstraintList(@NotNull IdrPsiConstraintList o) {
     visitPsiElement(o);
   }
 
+  public void visitDataDeclaration(@NotNull IdrPsiDataDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDataDeclarationVariant(@NotNull IdrPsiDataDeclarationVariant o) {
+    visitPsiElement(o);
+  }
+
   public void visitDirective(@NotNull IdrPsiDirective o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEscapedFunctionCallExpression(@NotNull IdrPsiEscapedFunctionCallExpression o) {
+    visitExpression(o);
+  }
+
+  public void visitEscapedNameId(@NotNull IdrPsiEscapedNameId o) {
     visitPsiElement(o);
   }
 
