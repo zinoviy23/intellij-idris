@@ -8,6 +8,8 @@
     psiPackage="com.github.zinoviy23.intellijIdris.lang.parser.psi"
     psiImplPackage="com.github.zinoviy23.intellijIdris.lang.parser.psi.impl"
 
+    psiImplUtilClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrPsiImplUtilKt"
+
     elementTypeHolderClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes"
     elementTypeClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrElementType"
     tokenTypeClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenType"
@@ -56,7 +58,7 @@ operator_declaration ::= (KW_INFIX | KW_PREFIX | KW_INFIXL | KW_INFIXR) INTEGER_
     pin = 1
 }
 
-data_declaration ::= KW_DATA IDENTIFICATOR (IDENTIFICATOR)* EQ_SIGN indent? data_declaration_variant (indent? OPT_SEP indent? data_declaration_variant)* {
+data_declaration ::= KW_DATA IDENTIFICATOR (IDENTIFICATOR)* EQ_SIGN indent* data_declaration_variant (indent* OPT_SEP indent* data_declaration_variant)* {
     pin = 1
 }
 
@@ -110,7 +112,10 @@ let_entry ::= IDENTIFICATOR EQ_SIGN expression {
 
 type_expression ::= expression TYPE_SIGN indent? expression (TYPE_SIGN indent? expression)*
 
-id_expression ::= IDENTIFICATOR
+id_expression ::= IDENTIFICATOR {
+    methods=[getReference getName setName getUseScope]
+    implements="com.intellij.psi.PsiNamedElement"
+}
 
 placeholder_expression ::= PLACEHOLDER
 
@@ -156,7 +161,7 @@ escaped_name_id ::= ESCAPED_NAME_QUOTE ESCAPED_NAME ESCAPED_NAME_QUOTE {
     pin = 1
 }
 
-function_call_expression ::= function_element (simple_expression)*
+function_call_expression ::= function_element (indent? simple_expression)*
 
 private function_element ::= id_expression | paren_expression
 

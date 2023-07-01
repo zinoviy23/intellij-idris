@@ -4,6 +4,7 @@ package com.github.zinoviy23.intellijIdris.lang.parser.psi;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
 
 public class IdrPsiVisitor extends PsiElementVisitor {
 
@@ -69,6 +70,7 @@ public class IdrPsiVisitor extends PsiElementVisitor {
 
   public void visitIdExpression(@NotNull IdrPsiIdExpression o) {
     visitExpression(o);
+    // visitPsiNamedElement(o);
   }
 
   public void visitIdentificatorReference(@NotNull IdrPsiIdentificatorReference o) {

@@ -77,7 +77,7 @@ public class IdrParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // KW_DATA IDENTIFICATOR (IDENTIFICATOR)* EQ_SIGN indent? data_declaration_variant (indent? OPT_SEP indent? data_declaration_variant)*
+  // KW_DATA IDENTIFICATOR (IDENTIFICATOR)* EQ_SIGN indent* data_declaration_variant (indent* OPT_SEP indent* data_declaration_variant)*
   public static boolean data_declaration(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "data_declaration")) return false;
     if (!nextTokenIs(b, KW_DATA)) return false;
@@ -105,14 +105,18 @@ public class IdrParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // indent?
+  // indent*
   private static boolean data_declaration_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "data_declaration_4")) return false;
-    indent(b, l + 1);
+    while (true) {
+      int c = current_position_(b);
+      if (!indent(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "data_declaration_4", c)) break;
+    }
     return true;
   }
 
-  // (indent? OPT_SEP indent? data_declaration_variant)*
+  // (indent* OPT_SEP indent* data_declaration_variant)*
   private static boolean data_declaration_6(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "data_declaration_6")) return false;
     while (true) {
@@ -123,7 +127,7 @@ public class IdrParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // indent? OPT_SEP indent? data_declaration_variant
+  // indent* OPT_SEP indent* data_declaration_variant
   private static boolean data_declaration_6_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "data_declaration_6_0")) return false;
     boolean r;
@@ -136,17 +140,25 @@ public class IdrParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // indent?
+  // indent*
   private static boolean data_declaration_6_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "data_declaration_6_0_0")) return false;
-    indent(b, l + 1);
+    while (true) {
+      int c = current_position_(b);
+      if (!indent(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "data_declaration_6_0_0", c)) break;
+    }
     return true;
   }
 
-  // indent?
+  // indent*
   private static boolean data_declaration_6_0_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "data_declaration_6_0_2")) return false;
-    indent(b, l + 1);
+    while (true) {
+      int c = current_position_(b);
+      if (!indent(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "data_declaration_6_0_2", c)) break;
+    }
     return true;
   }
 
@@ -1328,7 +1340,7 @@ public class IdrParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // function_element (simple_expression)*
+  // function_element (indent? simple_expression)*
   public static boolean function_call_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call_expression")) return false;
     if (!nextTokenIsSmart(b, IDENTIFICATOR, LPAR)) return false;
@@ -1340,7 +1352,7 @@ public class IdrParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (simple_expression)*
+  // (indent? simple_expression)*
   private static boolean function_call_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call_expression_1")) return false;
     while (true) {
@@ -1351,14 +1363,22 @@ public class IdrParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (simple_expression)
+  // indent? simple_expression
   private static boolean function_call_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = simple_expression(b, l + 1);
+    r = function_call_expression_1_0_0(b, l + 1);
+    r = r && simple_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // indent?
+  private static boolean function_call_expression_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_call_expression_1_0_0")) return false;
+    indent(b, l + 1);
+    return true;
   }
 
   // list_literal_expression |

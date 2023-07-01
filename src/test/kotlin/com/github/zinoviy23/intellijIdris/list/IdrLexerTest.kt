@@ -29,4 +29,6 @@ class IdrLexerTest : LexerTestCase() {
     fun testLiterals() = doTest()
 
     fun testInnerIf() = doTest()
+
+    fun testDataWithSpaces() = doTest()
 }
