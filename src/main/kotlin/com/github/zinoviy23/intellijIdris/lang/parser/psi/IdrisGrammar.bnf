@@ -66,7 +66,7 @@ operator_list ::= OPERATOR (COMMA OPERATOR)*
 
 type_specification ::= constraint_list? expression
 
-constraint_list ::= expression ARROW_SIGN
+constraint_list ::= expression ARROW_SIGN indent?
 
 function_match ::= IDENTIFICATOR (simple_expression)* EQ_SIGN indent? expression [indent? function_where_block] {
     pin=1
@@ -108,7 +108,7 @@ let_entry ::= IDENTIFICATOR EQ_SIGN expression {
     pin = 2
 }
 
-type_expression ::= expression TYPE_SIGN expression (TYPE_SIGN expression)*
+type_expression ::= expression TYPE_SIGN indent? expression (TYPE_SIGN indent? expression)*
 
 id_expression ::= IDENTIFICATOR
 
@@ -129,6 +129,7 @@ paren_expression ::= LPAR EOL* paren_expression_end {
 }
 
 paren_expression_end ::= RPAR |
+                         OPERATOR RPAR |
                          IDENTIFICATOR COLON_SIGN expression RPAR |
                          expression RPAR |
                          expression_list RPAR
