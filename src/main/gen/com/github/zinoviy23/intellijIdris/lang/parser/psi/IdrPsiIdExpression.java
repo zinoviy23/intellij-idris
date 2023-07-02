@@ -8,7 +8,7 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.SearchScope;
 
-public interface IdrPsiIdExpression extends IdrPsiExpression, PsiNamedElement {
+public interface IdrPsiIdExpression extends IdrPsiSimpleExpression, PsiNamedElement {
 
   @NotNull
   PsiReference getReference();

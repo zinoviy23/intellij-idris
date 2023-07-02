@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiIntegerLiteralExpressionImpl extends IdrPsiSimpleExpressionImpl implements IdrPsiIntegerLiteralExpression {
+public abstract class IdrPsiPatternImpl extends ASTWrapperPsiElement implements IdrPsiPattern {
 
-  public IdrPsiIntegerLiteralExpressionImpl(@NotNull ASTNode node) {
+  public IdrPsiPatternImpl(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitIntegerLiteralExpression(this);
+    visitor.visitPattern(this);
   }
 
   @Override

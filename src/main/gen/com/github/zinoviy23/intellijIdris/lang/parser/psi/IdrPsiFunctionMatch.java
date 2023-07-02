@@ -7,10 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface IdrPsiFunctionMatch extends PsiElement {
 
-  @NotNull
-  List<IdrPsiExpression> getExpressionList();
+  @Nullable
+  IdrPsiExpression getExpression();
 
   @Nullable
   IdrPsiFunctionWhereBlock getFunctionWhereBlock();
+
+  @NotNull
+  List<IdrPsiPattern> getPatternList();
 
 }

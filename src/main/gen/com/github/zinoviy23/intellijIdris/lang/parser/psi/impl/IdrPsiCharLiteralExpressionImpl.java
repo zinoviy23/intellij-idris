@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiCharLiteralExpressionImpl extends IdrPsiExpressionImpl implements IdrPsiCharLiteralExpression {
+public class IdrPsiCharLiteralExpressionImpl extends IdrPsiSimpleExpressionImpl implements IdrPsiCharLiteralExpression {
 
   public IdrPsiCharLiteralExpressionImpl(@NotNull ASTNode node) {
     super(node);

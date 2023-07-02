@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiFunctionCallExpression extends IdrPsiExpression {
-
-  @NotNull
-  List<IdrPsiSimpleExpression> getSimpleExpressionList();
+public interface IdrPsiPattern extends PsiElement {
 
 }

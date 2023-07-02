@@ -13,7 +13,7 @@ public class IdrPsiVisitor extends PsiElementVisitor {
   }
 
   public void visitCharLiteralExpression(@NotNull IdrPsiCharLiteralExpression o) {
-    visitExpression(o);
+    visitSimpleExpression(o);
   }
 
   public void visitConstraintList(@NotNull IdrPsiConstraintList o) {
@@ -68,8 +68,12 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitHoleExpression(@NotNull IdrPsiHoleExpression o) {
+    visitSimpleExpression(o);
+  }
+
   public void visitIdExpression(@NotNull IdrPsiIdExpression o) {
-    visitExpression(o);
+    visitSimpleExpression(o);
     // visitPsiNamedElement(o);
   }
 
@@ -81,12 +85,16 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitExpression(o);
   }
 
+  public void visitImplicitArgumentPattern(@NotNull IdrPsiImplicitArgumentPattern o) {
+    visitPattern(o);
+  }
+
   public void visitImportStatement(@NotNull IdrPsiImportStatement o) {
     visitPsiElement(o);
   }
 
   public void visitIntegerLiteralExpression(@NotNull IdrPsiIntegerLiteralExpression o) {
-    visitExpression(o);
+    visitSimpleExpression(o);
   }
 
   public void visitLambdaExpression(@NotNull IdrPsiLambdaExpression o) {
@@ -102,11 +110,15 @@ public class IdrPsiVisitor extends PsiElementVisitor {
   }
 
   public void visitListLiteralExpression(@NotNull IdrPsiListLiteralExpression o) {
-    visitExpression(o);
+    visitSimpleExpression(o);
   }
 
   public void visitModuleStatement(@NotNull IdrPsiModuleStatement o) {
     visitPsiElement(o);
+  }
+
+  public void visitNamedPattern(@NotNull IdrPsiNamedPattern o) {
+    visitPattern(o);
   }
 
   public void visitOperatorDeclaration(@NotNull IdrPsiOperatorDeclaration o) {
@@ -122,23 +134,31 @@ public class IdrPsiVisitor extends PsiElementVisitor {
   }
 
   public void visitParenExpression(@NotNull IdrPsiParenExpression o) {
-    visitExpression(o);
+    visitSimpleExpression(o);
   }
 
   public void visitParenExpressionEnd(@NotNull IdrPsiParenExpressionEnd o) {
     visitPsiElement(o);
   }
 
+  public void visitPattern(@NotNull IdrPsiPattern o) {
+    visitPsiElement(o);
+  }
+
   public void visitPlaceholderExpression(@NotNull IdrPsiPlaceholderExpression o) {
-    visitExpression(o);
+    visitSimpleExpression(o);
   }
 
   public void visitSimpleExpression(@NotNull IdrPsiSimpleExpression o) {
     visitExpression(o);
   }
 
+  public void visitSimpleExpressionPattern(@NotNull IdrPsiSimpleExpressionPattern o) {
+    visitPattern(o);
+  }
+
   public void visitStringLiteralExpression(@NotNull IdrPsiStringLiteralExpression o) {
-    visitExpression(o);
+    visitSimpleExpression(o);
   }
 
   public void visitTypeExpression(@NotNull IdrPsiTypeExpression o) {

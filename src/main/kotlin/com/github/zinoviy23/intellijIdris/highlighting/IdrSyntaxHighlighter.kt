@@ -28,6 +28,7 @@ internal class IdrSyntaxHighlighter : SyntaxHighlighterBase() {
         private val STRING_LITERAL = createTextAttributesKey("IDRIS_STRING_LITERAL", DefaultLanguageHighlighterColors.STRING)
         private val ESCAPED_FUNCTION_CALL = createTextAttributesKey("IDRIS_FUNCTION_CALL_ID", DefaultLanguageHighlighterColors.STATIC_METHOD)
         val DATA_CONSTRUCTOR = createTextAttributesKey("IDRIS_DATA_CONSTRUCTOR", DefaultLanguageHighlighterColors.STATIC_FIELD)
+        val HOLE_EXPRESSION = createTextAttributesKey("IDRIS_HOLE_EXPRESSION", DefaultLanguageHighlighterColors.REASSIGNED_LOCAL_VARIABLE)
 
         private val map = mutableMapOf<IElementType, TextAttributesKey>()
 

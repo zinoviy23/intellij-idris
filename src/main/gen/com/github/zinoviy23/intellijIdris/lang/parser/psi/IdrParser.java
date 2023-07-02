@@ -36,11 +36,12 @@ public class IdrParser implements PsiParser, LightPsiParser {
   }
 
   public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
+    create_token_set_(IMPLICIT_ARGUMENT_PATTERN, NAMED_PATTERN, PATTERN, SIMPLE_EXPRESSION_PATTERN),
     create_token_set_(CASE_EXPRESSION, CHAR_LITERAL_EXPRESSION, ESCAPED_FUNCTION_CALL_EXPRESSION, EXPRESSION,
-      FUNCTION_CALL_EXPRESSION, ID_EXPRESSION, IF_EXPRESSION, INTEGER_LITERAL_EXPRESSION,
-      LAMBDA_EXPRESSION, LET_EXPRESSION, LIST_LITERAL_EXPRESSION, OPERATOR_EXPRESSION,
-      PAREN_EXPRESSION, PLACEHOLDER_EXPRESSION, SIMPLE_EXPRESSION, STRING_LITERAL_EXPRESSION,
-      TYPE_EXPRESSION),
+      FUNCTION_CALL_EXPRESSION, HOLE_EXPRESSION, ID_EXPRESSION, IF_EXPRESSION,
+      INTEGER_LITERAL_EXPRESSION, LAMBDA_EXPRESSION, LET_EXPRESSION, LIST_LITERAL_EXPRESSION,
+      OPERATOR_EXPRESSION, PAREN_EXPRESSION, PLACEHOLDER_EXPRESSION, SIMPLE_EXPRESSION,
+      STRING_LITERAL_EXPRESSION, TYPE_EXPRESSION),
   };
 
   /* ********************************************************** */
@@ -430,24 +431,24 @@ public class IdrParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFICATOR (simple_expression)* EQ_SIGN indent? expression [indent? function_where_block]
+  // IDENTIFICATOR (pattern)* EQ_SIGN indent? expression [indent? function_where_block]
   public static boolean function_match(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_match")) return false;
     if (!nextTokenIs(b, IDENTIFICATOR)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, FUNCTION_MATCH, null);
     r = consumeToken(b, IDENTIFICATOR);
-    p = r; // pin = 1
-    r = r && report_error_(b, function_match_1(b, l + 1));
-    r = p && report_error_(b, consumeToken(b, EQ_SIGN)) && r;
-    r = p && report_error_(b, function_match_3(b, l + 1)) && r;
+    r = r && function_match_1(b, l + 1);
+    r = r && consumeToken(b, EQ_SIGN);
+    p = r; // pin = 3
+    r = r && report_error_(b, function_match_3(b, l + 1));
     r = p && report_error_(b, expression(b, l + 1, -1)) && r;
     r = p && function_match_5(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // (simple_expression)*
+  // (pattern)*
   private static boolean function_match_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_match_1")) return false;
     while (true) {
@@ -458,12 +459,12 @@ public class IdrParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (simple_expression)
+  // (pattern)
   private static boolean function_match_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_match_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = simple_expression(b, l + 1);
+    r = pattern(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -636,6 +637,19 @@ public class IdrParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // HOLE_MARKER IDENTIFICATOR
+  public static boolean hole_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "hole_expression")) return false;
+    if (!nextTokenIs(b, HOLE_MARKER)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, HOLE_EXPRESSION, null);
+    r = consumeTokens(b, 1, HOLE_MARKER, IDENTIFICATOR);
+    p = r; // pin = 1
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  /* ********************************************************** */
   // IDENTIFICATOR
   public static boolean id_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "id_expression")) return false;
@@ -678,6 +692,39 @@ public class IdrParser implements PsiParser, LightPsiParser {
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, IDENTIFICATOR_SEP, IDENTIFICATOR);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LBRACE IDENTIFICATOR [EQ_SIGN simple_expression] RBRACE
+  public static boolean implicit_argument_pattern(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "implicit_argument_pattern")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, IMPLICIT_ARGUMENT_PATTERN, null);
+    r = consumeTokens(b, 1, LBRACE, IDENTIFICATOR);
+    p = r; // pin = 1
+    r = r && report_error_(b, implicit_argument_pattern_2(b, l + 1));
+    r = p && consumeToken(b, RBRACE) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // [EQ_SIGN simple_expression]
+  private static boolean implicit_argument_pattern_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "implicit_argument_pattern_2")) return false;
+    implicit_argument_pattern_2_0(b, l + 1);
+    return true;
+  }
+
+  // EQ_SIGN simple_expression
+  private static boolean implicit_argument_pattern_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "implicit_argument_pattern_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EQ_SIGN);
+    r = r && simple_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -815,6 +862,20 @@ public class IdrParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, KW_MODULE);
     p = r; // pin = 1
     r = r && identificator_reference(b, l + 1);
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFICATOR PATTERN_NAME_SEP simple_expression
+  public static boolean named_pattern(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "named_pattern")) return false;
+    if (!nextTokenIs(b, IDENTIFICATOR)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, NAMED_PATTERN, null);
+    r = consumeTokens(b, 2, IDENTIFICATOR, PATTERN_NAME_SEP);
+    p = r; // pin = 2
+    r = r && simple_expression(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
@@ -958,6 +1019,19 @@ public class IdrParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // named_pattern | simple_expression_pattern | implicit_argument_pattern
+  public static boolean pattern(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "pattern")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _COLLAPSE_, PATTERN, "<pattern>");
+    r = named_pattern(b, l + 1);
+    if (!r) r = simple_expression_pattern(b, l + 1);
+    if (!r) r = implicit_argument_pattern(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // PLACEHOLDER
   public static boolean placeholder_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "placeholder_expression")) return false;
@@ -966,6 +1040,17 @@ public class IdrParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, PLACEHOLDER);
     exit_section_(b, m, PLACEHOLDER_EXPRESSION, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // simple_expression
+  public static boolean simple_expression_pattern(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "simple_expression_pattern")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SIMPLE_EXPRESSION_PATTERN, "<simple expression pattern>");
+    r = simple_expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1384,6 +1469,7 @@ public class IdrParser implements PsiParser, LightPsiParser {
   // list_literal_expression |
   //                       paren_expression |
   //                       id_expression |
+  //                       hole_expression |
   //                       integer_literal_expression |
   //                       char_literal_expression |
   //                       string_literal_expression |
@@ -1395,6 +1481,7 @@ public class IdrParser implements PsiParser, LightPsiParser {
     r = list_literal_expression(b, l + 1);
     if (!r) r = paren_expression(b, l + 1);
     if (!r) r = id_expression(b, l + 1);
+    if (!r) r = hole_expression(b, l + 1);
     if (!r) r = integer_literal_expression(b, l + 1);
     if (!r) r = char_literal_expression(b, l + 1);
     if (!r) r = string_literal_expression(b, l + 1);

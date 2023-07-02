@@ -3,6 +3,7 @@ package com.github.zinoviy23.intellijIdris.highlighting
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrPsiDataDeclarationVariant
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrPsiFunctionMatch
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrPsiFunctionSpecification
+import com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrPsiHoleExpression
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
@@ -15,6 +16,7 @@ internal class IdrSyntaxAnnotator : Annotator, DumbAware  {
         when (element) {
             is IdrPsiFunctionMatch, is IdrPsiFunctionSpecification -> highlightFunctionDeclarationName(element, holder)
             is IdrPsiDataDeclarationVariant -> highlightDataVariant(element, holder)
+            is IdrPsiHoleExpression -> highlightHole(element, holder)
             else -> return
         }
     }
@@ -41,6 +43,14 @@ internal class IdrSyntaxAnnotator : Annotator, DumbAware  {
         holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
             .range(identifier.textRange)
             .textAttributes(IdrSyntaxHighlighter.FUNCTION_SPECIFICATION_NAME)
+            .create()
+    }
+
+    private fun highlightHole(element: IdrPsiHoleExpression, holder: AnnotationHolder) {
+        val id = element.firstChild?.nextSibling ?: return
+        holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
+            .range(id.textRange)
+            .textAttributes(IdrSyntaxHighlighter.HOLE_EXPRESSION)
             .create()
     }
 }

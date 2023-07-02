@@ -12,7 +12,7 @@ import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.SearchScope;
 
-public class IdrPsiIdExpressionImpl extends IdrPsiExpressionImpl implements IdrPsiIdExpression {
+public class IdrPsiIdExpressionImpl extends IdrPsiSimpleExpressionImpl implements IdrPsiIdExpression {
 
   public IdrPsiIdExpressionImpl(@NotNull ASTNode node) {
     super(node);

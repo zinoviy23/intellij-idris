@@ -120,9 +120,12 @@ PLACEHOLDER=_
     ","                  { return COMMA; }
     "["                  { return LBRACKET; }
     "]"                  { return RBRACKET; }
+    "{"                  { return LBRACE; }
+    "}"                  { return RBRACE; }
     "\\"                 { return BACKSLASH; }
     "|"                  { return OPT_SEP; }
-
+    "?"                  { return HOLE_MARKER; }
+    "@"                  { return PATTERN_NAME_SEP; }
     {PLACEHOLDER}        { return PLACEHOLDER; }
     {OPERATOR}           { return OPERATOR; }
     [^]                  { return BAD_CHARACTER; }

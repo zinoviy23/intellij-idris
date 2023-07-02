@@ -29,8 +29,8 @@ public class IdrPsiDataDeclarationVariantImpl extends ASTWrapperPsiElement imple
 
   @Override
   @NotNull
-  public List<IdrPsiExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiExpression.class);
+  public List<IdrPsiSimpleExpression> getSimpleExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiSimpleExpression.class);
   }
 
 }

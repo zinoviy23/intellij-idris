@@ -9,7 +9,8 @@ import com.intellij.psi.tree.IElementType
 internal class IdrBraceMatcher : PairedBraceMatcher {
     override fun getPairs(): Array<BracePair> = arrayOf(
         BracePair(IdrTokenTypes.LPAR, IdrTokenTypes.RPAR, true),
-        BracePair(IdrTokenTypes.LBRACKET, IdrTokenTypes.RBRACKET, true)
+        BracePair(IdrTokenTypes.LBRACKET, IdrTokenTypes.RBRACKET, true),
+        BracePair(IdrTokenTypes.LBRACE, IdrTokenTypes.RBRACE, true),
     )
 
     override fun isPairedBracesAllowedBeforeType(lbraceType: IElementType, contextType: IElementType?): Boolean = true

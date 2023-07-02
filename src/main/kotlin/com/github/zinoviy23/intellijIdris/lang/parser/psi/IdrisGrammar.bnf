@@ -15,6 +15,7 @@
     tokenTypeClass="com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenType"
 
     extends(".*expression")=expression
+    extends(".*pattern")=pattern
 
     tokens=[
         LINE_COMMENT_START="--"
@@ -70,8 +71,17 @@ type_specification ::= constraint_list? expression
 
 constraint_list ::= expression ARROW_SIGN indent?
 
-function_match ::= IDENTIFICATOR (simple_expression)* EQ_SIGN indent? expression [indent? function_where_block] {
+function_match ::= IDENTIFICATOR (pattern)* EQ_SIGN indent? expression [indent? function_where_block] {
+    pin=3
+}
+
+pattern ::= named_pattern | simple_expression_pattern | implicit_argument_pattern
+simple_expression_pattern ::= simple_expression
+implicit_argument_pattern ::= LBRACE IDENTIFICATOR [EQ_SIGN simple_expression] RBRACE {
     pin=1
+}
+named_pattern ::= IDENTIFICATOR PATTERN_NAME_SEP simple_expression {
+    pin=2
 }
 
 function_where_block ::= KW_WHERE (indent (function_specification | function_match))*
@@ -92,6 +102,7 @@ private expression_recover ::= !(EOL+ IDENTIFICATOR)
 simple_expression ::= list_literal_expression |
                       paren_expression |
                       id_expression |
+                      hole_expression |
                       integer_literal_expression |
                       char_literal_expression |
                       string_literal_expression |
@@ -115,22 +126,35 @@ type_expression ::= expression TYPE_SIGN indent? expression (TYPE_SIGN indent? e
 id_expression ::= IDENTIFICATOR {
     methods=[getReference getName setName getUseScope]
     implements="com.intellij.psi.PsiNamedElement"
+    extends=simple_expression
 }
 
-placeholder_expression ::= PLACEHOLDER
+placeholder_expression ::= PLACEHOLDER {
+    extends=simple_expression
+}
 
-integer_literal_expression ::= INTEGER_LITERAL
+hole_expression ::= HOLE_MARKER IDENTIFICATOR {
+    pin = 1
+    extends=simple_expression
+}
+
+integer_literal_expression ::= INTEGER_LITERAL {
+    extends=simple_expression
+}
 
 string_literal_expression ::= STRING_QUOTE STRING_CONTENT? STRING_QUOTE {
     pin = 1
+    extends=simple_expression
 }
 
 char_literal_expression ::= CHAR_QUOTE CHAR_CONTENT CHAR_QUOTE {
     pin = 1
+    extends=simple_expression
 }
 
 paren_expression ::= LPAR EOL* paren_expression_end {
     pin = 1
+    extends=simple_expression
 }
 
 paren_expression_end ::= RPAR |
@@ -151,6 +175,7 @@ case_expression ::= KW_CASE expression KW_OF expression expression ARROW_SIGN ex
 
 list_literal_expression ::= LBRACKET [expression (COMMA expression)*] RBRACKET {
     pin = 1
+    extends=simple_expression
 }
 
 operator_expression ::= expression OPERATOR indent? expression (OPERATOR indent? expression)*

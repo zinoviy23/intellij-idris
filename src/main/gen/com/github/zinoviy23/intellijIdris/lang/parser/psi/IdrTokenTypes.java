@@ -23,9 +23,11 @@ public interface IdrTokenTypes {
   IElementType FUNCTION_OPTS_LIST = new IdrElementType("FUNCTION_OPTS_LIST");
   IElementType FUNCTION_SPECIFICATION = new IdrElementType("FUNCTION_SPECIFICATION");
   IElementType FUNCTION_WHERE_BLOCK = new IdrElementType("FUNCTION_WHERE_BLOCK");
+  IElementType HOLE_EXPRESSION = new IdrElementType("HOLE_EXPRESSION");
   IElementType IDENTIFICATOR_REFERENCE = new IdrElementType("IDENTIFICATOR_REFERENCE");
   IElementType ID_EXPRESSION = new IdrElementType("ID_EXPRESSION");
   IElementType IF_EXPRESSION = new IdrElementType("IF_EXPRESSION");
+  IElementType IMPLICIT_ARGUMENT_PATTERN = new IdrElementType("IMPLICIT_ARGUMENT_PATTERN");
   IElementType IMPORT_STATEMENT = new IdrElementType("IMPORT_STATEMENT");
   IElementType INTEGER_LITERAL_EXPRESSION = new IdrElementType("INTEGER_LITERAL_EXPRESSION");
   IElementType LAMBDA_EXPRESSION = new IdrElementType("LAMBDA_EXPRESSION");
@@ -33,13 +35,16 @@ public interface IdrTokenTypes {
   IElementType LET_EXPRESSION = new IdrElementType("LET_EXPRESSION");
   IElementType LIST_LITERAL_EXPRESSION = new IdrElementType("LIST_LITERAL_EXPRESSION");
   IElementType MODULE_STATEMENT = new IdrElementType("MODULE_STATEMENT");
+  IElementType NAMED_PATTERN = new IdrElementType("NAMED_PATTERN");
   IElementType OPERATOR_DECLARATION = new IdrElementType("OPERATOR_DECLARATION");
   IElementType OPERATOR_EXPRESSION = new IdrElementType("OPERATOR_EXPRESSION");
   IElementType OPERATOR_LIST = new IdrElementType("OPERATOR_LIST");
   IElementType PAREN_EXPRESSION = new IdrElementType("PAREN_EXPRESSION");
   IElementType PAREN_EXPRESSION_END = new IdrElementType("PAREN_EXPRESSION_END");
+  IElementType PATTERN = new IdrElementType("PATTERN");
   IElementType PLACEHOLDER_EXPRESSION = new IdrElementType("PLACEHOLDER_EXPRESSION");
   IElementType SIMPLE_EXPRESSION = new IdrElementType("SIMPLE_EXPRESSION");
+  IElementType SIMPLE_EXPRESSION_PATTERN = new IdrElementType("SIMPLE_EXPRESSION_PATTERN");
   IElementType STRING_LITERAL_EXPRESSION = new IdrElementType("STRING_LITERAL_EXPRESSION");
   IElementType TYPE_EXPRESSION = new IdrElementType("TYPE_EXPRESSION");
   IElementType TYPE_SPECIFICATION = new IdrElementType("TYPE_SPECIFICATION");
@@ -59,6 +64,7 @@ public interface IdrTokenTypes {
   IElementType EQ_SIGN = new IdrTokenType("EQ_SIGN");
   IElementType ESCAPED_NAME = new IdrTokenType("ESCAPED_NAME");
   IElementType ESCAPED_NAME_QUOTE = new IdrTokenType("ESCAPED_NAME_QUOTE");
+  IElementType HOLE_MARKER = new IdrTokenType("HOLE_MARKER");
   IElementType IDENTIFICATOR = new IdrTokenType("IDENTIFICATOR");
   IElementType IDENTIFICATOR_SEP = new IdrTokenType("IDENTIFICATOR_SEP");
   IElementType INTEGER_LITERAL = new IdrTokenType("INTEGER_LITERAL");
@@ -80,6 +86,7 @@ public interface IdrTokenTypes {
   IElementType KW_THEN = new IdrTokenType("KW_THEN");
   IElementType KW_TOTAL = new IdrTokenType("KW_TOTAL");
   IElementType KW_WHERE = new IdrTokenType("KW_WHERE");
+  IElementType LBRACE = new IdrTokenType("LBRACE");
   IElementType LBRACKET = new IdrTokenType("LBRACKET");
   IElementType LINE_COMMENT_START = new IdrTokenType("--");
   IElementType LINE_COMMENT_TEXT = new IdrTokenType("LINE_COMMENT_TEXT");
@@ -87,7 +94,9 @@ public interface IdrTokenTypes {
   IElementType OPEN = new IdrTokenType("OPEN");
   IElementType OPERATOR = new IdrTokenType("OPERATOR");
   IElementType OPT_SEP = new IdrTokenType("OPT_SEP");
+  IElementType PATTERN_NAME_SEP = new IdrTokenType("PATTERN_NAME_SEP");
   IElementType PLACEHOLDER = new IdrTokenType("PLACEHOLDER");
+  IElementType RBRACE = new IdrTokenType("RBRACE");
   IElementType RBRACKET = new IdrTokenType("RBRACKET");
   IElementType RPAR = new IdrTokenType("RPAR");
   IElementType STRING_CONTENT = new IdrTokenType("STRING_CONTENT");
@@ -142,6 +151,9 @@ public interface IdrTokenTypes {
       else if (type == FUNCTION_WHERE_BLOCK) {
         return new IdrPsiFunctionWhereBlockImpl(node);
       }
+      else if (type == HOLE_EXPRESSION) {
+        return new IdrPsiHoleExpressionImpl(node);
+      }
       else if (type == IDENTIFICATOR_REFERENCE) {
         return new IdrPsiIdentificatorReferenceImpl(node);
       }
@@ -150,6 +162,9 @@ public interface IdrTokenTypes {
       }
       else if (type == IF_EXPRESSION) {
         return new IdrPsiIfExpressionImpl(node);
+      }
+      else if (type == IMPLICIT_ARGUMENT_PATTERN) {
+        return new IdrPsiImplicitArgumentPatternImpl(node);
       }
       else if (type == IMPORT_STATEMENT) {
         return new IdrPsiImportStatementImpl(node);
@@ -172,6 +187,9 @@ public interface IdrTokenTypes {
       else if (type == MODULE_STATEMENT) {
         return new IdrPsiModuleStatementImpl(node);
       }
+      else if (type == NAMED_PATTERN) {
+        return new IdrPsiNamedPatternImpl(node);
+      }
       else if (type == OPERATOR_DECLARATION) {
         return new IdrPsiOperatorDeclarationImpl(node);
       }
@@ -189,6 +207,9 @@ public interface IdrTokenTypes {
       }
       else if (type == PLACEHOLDER_EXPRESSION) {
         return new IdrPsiPlaceholderExpressionImpl(node);
+      }
+      else if (type == SIMPLE_EXPRESSION_PATTERN) {
+        return new IdrPsiSimpleExpressionPatternImpl(node);
       }
       else if (type == STRING_LITERAL_EXPRESSION) {
         return new IdrPsiStringLiteralExpressionImpl(node);

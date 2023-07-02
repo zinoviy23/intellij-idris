@@ -44,14 +44,14 @@ private class SimpleReference(element: IdrPsiIdExpression) : PsiReferenceBase<Id
                     }
                 }
                 is IdrPsiFunctionMatch -> {
-                    val params = parent.firstChild
-                        .siblings(withSelf = false)
-                        .filter { it !is PsiWhiteSpace }
-                        .takeWhile { it.elementType != IdrTokenTypes.EQ_SIGN }
+                    val params = parent.patternList
 
                     for (param in params) {
-                        if (param is IdrPsiIdExpression) {
-                            if (param.name == myElement.name && param != myElement) return param
+                        if (param is IdrPsiSimpleExpressionPattern) {
+                            val paramExpr = param.simpleExpression
+                            if (paramExpr is IdrPsiIdExpression) {
+                                if (paramExpr.name == myElement.name && param != myElement) return paramExpr
+                            }
                         }
                     }
                 }

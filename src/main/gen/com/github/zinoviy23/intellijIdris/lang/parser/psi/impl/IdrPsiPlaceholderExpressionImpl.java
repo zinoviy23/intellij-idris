@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiPlaceholderExpressionImpl extends IdrPsiExpressionImpl implements IdrPsiPlaceholderExpression {
+public class IdrPsiPlaceholderExpressionImpl extends IdrPsiSimpleExpressionImpl implements IdrPsiPlaceholderExpression {
 
   public IdrPsiPlaceholderExpressionImpl(@NotNull ASTNode node) {
     super(node);
