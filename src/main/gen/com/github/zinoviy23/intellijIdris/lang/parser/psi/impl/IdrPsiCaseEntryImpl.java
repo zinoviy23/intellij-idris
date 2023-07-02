@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiCaseExpressionImpl extends IdrPsiExpressionImpl implements IdrPsiCaseExpression {
+public class IdrPsiCaseEntryImpl extends ASTWrapperPsiElement implements IdrPsiCaseEntry {
 
-  public IdrPsiCaseExpressionImpl(@NotNull ASTNode node) {
+  public IdrPsiCaseEntryImpl(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitCaseExpression(this);
+    visitor.visitCaseEntry(this);
   }
 
   @Override
@@ -29,14 +29,14 @@ public class IdrPsiCaseExpressionImpl extends IdrPsiExpressionImpl implements Id
 
   @Override
   @NotNull
-  public List<IdrPsiCaseEntry> getCaseEntryList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiCaseEntry.class);
+  public IdrPsiExpression getExpression() {
+    return findNotNullChildByClass(IdrPsiExpression.class);
   }
 
   @Override
-  @Nullable
-  public IdrPsiExpression getExpression() {
-    return findChildByClass(IdrPsiExpression.class);
+  @NotNull
+  public IdrPsiPattern getPattern() {
+    return findNotNullChildByClass(IdrPsiPattern.class);
   }
 
 }

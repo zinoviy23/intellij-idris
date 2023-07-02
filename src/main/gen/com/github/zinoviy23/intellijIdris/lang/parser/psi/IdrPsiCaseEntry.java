@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiCaseExpression extends IdrPsiExpression {
+public interface IdrPsiCaseEntry extends PsiElement {
 
   @NotNull
-  List<IdrPsiCaseEntry> getCaseEntryList();
-
-  @Nullable
   IdrPsiExpression getExpression();
+
+  @NotNull
+  IdrPsiPattern getPattern();
 
 }

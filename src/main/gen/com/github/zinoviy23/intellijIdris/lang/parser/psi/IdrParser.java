@@ -45,6 +45,62 @@ public class IdrParser implements PsiParser, LightPsiParser {
   };
 
   /* ********************************************************** */
+  // (indent+ case_entry)+
+  static boolean case_body(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_body")) return false;
+    if (!nextTokenIs(b, EOL)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = case_body_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!case_body_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "case_body", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // indent+ case_entry
+  private static boolean case_body_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_body_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = case_body_0_0(b, l + 1);
+    r = r && case_entry(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // indent+
+  private static boolean case_body_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_body_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = indent(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!indent(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "case_body_0_0", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // pattern ARROW_SIGN expression
+  public static boolean case_entry(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_entry")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, CASE_ENTRY, "<case entry>");
+    r = pattern(b, l + 1);
+    r = r && consumeToken(b, ARROW_SIGN);
+    r = r && expression(b, l + 1, -1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // CHAR_QUOTE CHAR_CONTENT CHAR_QUOTE
   public static boolean char_literal_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "char_literal_expression")) return false;
@@ -1115,7 +1171,7 @@ public class IdrParser implements PsiParser, LightPsiParser {
   // 0: BINARY(escaped_function_call_expression)
   // 1: BINARY(type_expression)
   // 2: BINARY(operator_expression)
-  // 3: ATOM(if_expression) ATOM(case_expression) ATOM(let_expression)
+  // 3: ATOM(if_expression) PREFIX(case_expression) ATOM(let_expression)
   // 4: ATOM(function_call_expression)
   // 5: ATOM(simple_expression)
   // 6: ATOM(lambda_expression)
@@ -1353,22 +1409,28 @@ public class IdrParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // KW_CASE expression KW_OF expression expression ARROW_SIGN expression
   public static boolean case_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "case_expression")) return false;
     if (!nextTokenIsSmart(b, KW_CASE)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, CASE_EXPRESSION, null);
+    Marker m = enter_section_(b, l, _NONE_, null);
     r = consumeTokenSmart(b, KW_CASE);
-    p = r; // pin = 1
-    r = r && report_error_(b, expression(b, l + 1, -1));
-    r = p && report_error_(b, consumeToken(b, KW_OF)) && r;
-    r = p && report_error_(b, expression(b, l + 1, -1)) && r;
-    r = p && report_error_(b, expression(b, l + 1, -1)) && r;
-    r = p && report_error_(b, consumeToken(b, ARROW_SIGN)) && r;
-    r = p && expression(b, l + 1, -1) && r;
-    exit_section_(b, l, m, r, p, null);
+    p = r;
+    r = p && expression(b, l, 3);
+    r = p && report_error_(b, case_expression_1(b, l + 1)) && r;
+    exit_section_(b, l, m, CASE_EXPRESSION, r, p, null);
     return r || p;
+  }
+
+  // KW_OF case_body
+  private static boolean case_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "case_expression_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, KW_OF);
+    r = r && case_body(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   // KW_LET indent? let_entry (indent let_entry)* KW_IN indent? expression

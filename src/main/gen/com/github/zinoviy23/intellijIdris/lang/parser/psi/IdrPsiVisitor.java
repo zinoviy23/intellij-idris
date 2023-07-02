@@ -8,6 +8,10 @@ import com.intellij.psi.PsiNamedElement;
 
 public class IdrPsiVisitor extends PsiElementVisitor {
 
+  public void visitCaseEntry(@NotNull IdrPsiCaseEntry o) {
+    visitPsiElement(o);
+  }
+
   public void visitCaseExpression(@NotNull IdrPsiCaseExpression o) {
     visitExpression(o);
   }

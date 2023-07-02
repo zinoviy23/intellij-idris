@@ -169,9 +169,9 @@ if_expression ::= KW_IF indent* expression indent* KW_THEN indent* expression in
     pin = 1
 }
 
-case_expression ::= KW_CASE expression KW_OF expression expression ARROW_SIGN expression {
-    pin = 1
-}
+case_expression ::= KW_CASE expression KW_OF case_body
+private case_body ::= (indent+ case_entry)+
+case_entry ::= pattern ARROW_SIGN expression
 
 list_literal_expression ::= LBRACKET [expression (COMMA expression)*] RBRACKET {
     pin = 1

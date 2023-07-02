@@ -8,6 +8,7 @@ import com.github.zinoviy23.intellijIdris.lang.parser.psi.impl.*;
 
 public interface IdrTokenTypes {
 
+  IElementType CASE_ENTRY = new IdrElementType("CASE_ENTRY");
   IElementType CASE_EXPRESSION = new IdrElementType("CASE_EXPRESSION");
   IElementType CHAR_LITERAL_EXPRESSION = new IdrElementType("CHAR_LITERAL_EXPRESSION");
   IElementType CONSTRAINT_LIST = new IdrElementType("CONSTRAINT_LIST");
@@ -106,7 +107,10 @@ public interface IdrTokenTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == CASE_EXPRESSION) {
+      if (type == CASE_ENTRY) {
+        return new IdrPsiCaseEntryImpl(node);
+      }
+      else if (type == CASE_EXPRESSION) {
         return new IdrPsiCaseExpressionImpl(node);
       }
       else if (type == CHAR_LITERAL_EXPRESSION) {
