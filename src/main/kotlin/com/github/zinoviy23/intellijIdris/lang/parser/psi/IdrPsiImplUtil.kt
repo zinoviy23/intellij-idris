@@ -55,6 +55,16 @@ private class SimpleReference(element: IdrPsiIdExpression) : PsiReferenceBase<Id
                         }
                     }
                 }
+                is IdrPsiFile -> {
+                    for (functionSpecification in parent.children.filterIsInstance<IdrPsiFunctionSpecification>()) {
+                        val id = functionSpecification.firstChild.siblings()
+                            .firstOrNull() { it.elementType == IdrTokenTypes.IDENTIFICATOR }
+
+                        if (id != null && id.text == myElement.name) {
+                            return id
+                        }
+                    }
+                }
             }
         }
 
