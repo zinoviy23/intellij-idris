@@ -45,8 +45,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          distribution: zulu
-          java-version: 11
+          distribution: liberica
+          java-version: 17
           cache: gradle
 
       # Set environment variables
