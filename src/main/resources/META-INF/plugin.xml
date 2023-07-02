@@ -28,9 +28,6 @@
         <ignoredFileProvider implementation="com.github.zinoviy23.intellijIdris.bytecode.IdrIgnoredFileProvider"/>
 
         <lang.refactoringSupport language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.refactoring.IdrRefactoringSupportProvider"/>
-
-        <applicationService serviceImplementation="com.github.zinoviy23.intellijIdris.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.zinoviy23.intellijIdris.services.MyProjectService"/>
     </extensions>
 
 <!--    <applicationListeners>-->
