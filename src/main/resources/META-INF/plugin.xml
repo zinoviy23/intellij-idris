@@ -22,6 +22,8 @@
         <lang.quoteHandler language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.editor.IdrQuoteHandler"/>
         <lang.commenter language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.editor.IdrCommenter"/>
 
+        <spellchecker.support language="Idris" implementationClass="com.github.zinoviy23.intellijIdris.editor.IdrSpellcheckingStrategy"/>
+
         <treeStructureProvider
                 implementation="com.github.zinoviy23.intellijIdris.bytecode.IdrProjectViewTreeStructureProvider"/>
         <!--suppress PluginXmlValidity -->
