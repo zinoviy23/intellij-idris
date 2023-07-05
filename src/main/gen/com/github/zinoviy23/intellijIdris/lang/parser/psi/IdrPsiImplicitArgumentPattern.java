@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface IdrPsiImplicitArgumentPattern extends IdrPsiPattern {
 
   @Nullable
-  IdrPsiSimpleExpression getSimpleExpression();
+  IdrPsiExpression getExpression();
 
 }

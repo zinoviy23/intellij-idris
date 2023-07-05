@@ -73,20 +73,23 @@ type_specification ::= constraint_list? expression
 
 constraint_list ::= expression indent? ARROW_SIGN indent?
 
-function_match ::= IDENTIFICATOR (pattern)* indent? EQ_SIGN indent? expression [indent? function_where_block] {
-    pin=4
+function_match ::= IDENTIFICATOR (pattern)* indent? EQ_SIGN indent? expression [eol* function_where_block] {
+    pin=5
 }
 
-pattern ::= named_pattern | simple_expression_pattern | implicit_argument_pattern
+pattern ::= simple_expression_pattern | implicit_argument_pattern
 simple_expression_pattern ::= simple_expression
 implicit_argument_pattern ::= LBRACE IDENTIFICATOR [EQ_SIGN simple_expression] RBRACE {
     pin=1
 }
-named_pattern ::= IDENTIFICATOR PATTERN_NAME_SEP simple_expression {
-    pin=2
+function_call_pattern ::= function_call_expression
+
+function_where_block ::= KW_WHERE open (indented_start (function_specification | function_match) indented_end)* close {
+    pin = 1
+    recoverWhile=where_recover
 }
 
-function_where_block ::= KW_WHERE (indent (function_specification | function_match))*
+private where_recover ::= !(<<keepTerminator>>)
 
 expression ::= type_expression |
                operator_expression |
@@ -102,6 +105,7 @@ private expression_recover ::= !(eol+ IDENTIFICATOR)
 
 simple_expression ::= list_literal_expression |
                       paren_expression |
+                      named_pattern_expression |
                       id_expression |
                       hole_expression |
                       integer_literal_expression |
@@ -114,7 +118,7 @@ private kw_expr ::= if_expression |
                     let_expression
 
 
-let_expression ::= KW_LET indent? let_entry (indent let_entry)* KW_IN indent? expression {
+let_expression ::= KW_LET open (indented_start let_entry indented_end)+ close KW_IN eol* expression {
     pin = 1
 }
 
@@ -166,6 +170,10 @@ paren_expression_end ::= RPAR |
 
 expression_list ::= expression (COMMA expression)+
 
+named_pattern_expression ::= IDENTIFICATOR PATTERN_NAME_SEP simple_expression {
+    pin=2
+}
+
 if_expression ::= KW_IF eol* expression eol* if_then_branch eol* if_else_branch {
     pin = 1
 }
@@ -173,9 +181,9 @@ if_expression ::= KW_IF eol* expression eol* if_then_branch eol* if_else_branch 
 if_then_branch ::= KW_THEN eol* expression { pin = 1 }
 if_else_branch ::= KW_ELSE eol* expression { pin = 1 }
 
-case_expression ::= KW_CASE expression KW_OF case_body
-private case_body ::= (indent+ case_entry)+
-case_entry ::= pattern ARROW_SIGN expression
+case_expression ::= KW_CASE eol* expression eol* KW_OF case_body
+private case_body ::= open (indented_start case_entry indented_end)* close
+case_entry ::= (function_call_pattern | pattern) ARROW_SIGN expression
 
 list_literal_expression ::= LBRACKET [expression (COMMA expression)*] RBRACKET {
     pin = 1
@@ -203,3 +211,9 @@ private indent ::= eol* indent_gt
 private eol ::= <<myEol>>
 
 private indent_gt ::= <<parseIndentGt>>
+
+private open ::= eol* <<openBlock>> <<pushIndent>>
+private close ::= <<popIndent>> <<closeBlock>>
+
+private indented_start ::= eol* <<notEndBlock>>
+private indented_end ::= <<keepTerminator>>

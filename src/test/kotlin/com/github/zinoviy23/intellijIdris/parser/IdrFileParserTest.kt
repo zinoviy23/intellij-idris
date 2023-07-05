@@ -48,5 +48,9 @@ class IdrFileParserTest : ParsingTestCase("parser", "idr", true, IdrParserDefini
 
     fun testWeirdIndentationExpression() = doTest(true)
 
+    fun testLetWithManyBindings() = doTest(true)
+
+    fun testFunctionWithWhere() = doTest(true)
+
     override fun getTestDataPath() = "src/test/testData"
 }

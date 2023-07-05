@@ -19,6 +19,7 @@ public interface IdrTokenTypes {
   IElementType EXPRESSION = new IdrElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new IdrElementType("EXPRESSION_LIST");
   IElementType FUNCTION_CALL_EXPRESSION = new IdrElementType("FUNCTION_CALL_EXPRESSION");
+  IElementType FUNCTION_CALL_PATTERN = new IdrElementType("FUNCTION_CALL_PATTERN");
   IElementType FUNCTION_MATCH = new IdrElementType("FUNCTION_MATCH");
   IElementType FUNCTION_OPTS_LIST = new IdrElementType("FUNCTION_OPTS_LIST");
   IElementType FUNCTION_SPECIFICATION = new IdrElementType("FUNCTION_SPECIFICATION");
@@ -37,7 +38,7 @@ public interface IdrTokenTypes {
   IElementType LET_EXPRESSION = new IdrElementType("LET_EXPRESSION");
   IElementType LIST_LITERAL_EXPRESSION = new IdrElementType("LIST_LITERAL_EXPRESSION");
   IElementType MODULE_STATEMENT = new IdrElementType("MODULE_STATEMENT");
-  IElementType NAMED_PATTERN = new IdrElementType("NAMED_PATTERN");
+  IElementType NAMED_PATTERN_EXPRESSION = new IdrElementType("NAMED_PATTERN_EXPRESSION");
   IElementType OPERATOR_DECLARATION = new IdrElementType("OPERATOR_DECLARATION");
   IElementType OPERATOR_ELEMENT = new IdrElementType("OPERATOR_ELEMENT");
   IElementType OPERATOR_EXPRESSION = new IdrElementType("OPERATOR_EXPRESSION");
@@ -143,6 +144,9 @@ public interface IdrTokenTypes {
       else if (type == FUNCTION_CALL_EXPRESSION) {
         return new IdrPsiFunctionCallExpressionImpl(node);
       }
+      else if (type == FUNCTION_CALL_PATTERN) {
+        return new IdrPsiFunctionCallPatternImpl(node);
+      }
       else if (type == FUNCTION_MATCH) {
         return new IdrPsiFunctionMatchImpl(node);
       }
@@ -197,8 +201,8 @@ public interface IdrTokenTypes {
       else if (type == MODULE_STATEMENT) {
         return new IdrPsiModuleStatementImpl(node);
       }
-      else if (type == NAMED_PATTERN) {
-        return new IdrPsiNamedPatternImpl(node);
+      else if (type == NAMED_PATTERN_EXPRESSION) {
+        return new IdrPsiNamedPatternExpressionImpl(node);
       }
       else if (type == OPERATOR_DECLARATION) {
         return new IdrPsiOperatorDeclarationImpl(node);

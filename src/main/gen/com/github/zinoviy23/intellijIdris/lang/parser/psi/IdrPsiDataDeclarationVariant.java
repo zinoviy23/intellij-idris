@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface IdrPsiDataDeclarationVariant extends PsiElement {
 
   @NotNull
-  List<IdrPsiSimpleExpression> getSimpleExpressionList();
+  List<IdrPsiExpression> getExpressionList();
 
 }

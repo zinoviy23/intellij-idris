@@ -29,8 +29,8 @@ public class IdrPsiFunctionCallExpressionImpl extends IdrPsiExpressionImpl imple
 
   @Override
   @NotNull
-  public List<IdrPsiSimpleExpression> getSimpleExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiSimpleExpression.class);
+  public List<IdrPsiExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiExpression.class);
   }
 
 }

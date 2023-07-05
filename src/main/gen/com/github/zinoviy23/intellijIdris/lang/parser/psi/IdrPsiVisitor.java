@@ -52,6 +52,10 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitExpression(o);
   }
 
+  public void visitFunctionCallPattern(@NotNull IdrPsiFunctionCallPattern o) {
+    visitPattern(o);
+  }
+
   public void visitFunctionMatch(@NotNull IdrPsiFunctionMatch o) {
     visitPsiElement(o);
   }
@@ -125,8 +129,8 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitNamedPattern(@NotNull IdrPsiNamedPattern o) {
-    visitPattern(o);
+  public void visitNamedPatternExpression(@NotNull IdrPsiNamedPatternExpression o) {
+    visitExpression(o);
   }
 
   public void visitOperatorDeclaration(@NotNull IdrPsiOperatorDeclaration o) {

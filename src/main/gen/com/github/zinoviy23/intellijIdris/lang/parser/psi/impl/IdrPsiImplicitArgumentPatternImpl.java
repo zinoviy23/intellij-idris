@@ -29,8 +29,8 @@ public class IdrPsiImplicitArgumentPatternImpl extends IdrPsiPatternImpl impleme
 
   @Override
   @Nullable
-  public IdrPsiSimpleExpression getSimpleExpression() {
-    return findChildByClass(IdrPsiSimpleExpression.class);
+  public IdrPsiExpression getExpression() {
+    return findChildByClass(IdrPsiExpression.class);
   }
 
 }

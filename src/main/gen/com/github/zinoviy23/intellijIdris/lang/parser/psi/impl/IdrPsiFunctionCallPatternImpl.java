@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiDataDeclarationVariantImpl extends ASTWrapperPsiElement implements IdrPsiDataDeclarationVariant {
+public class IdrPsiFunctionCallPatternImpl extends IdrPsiPatternImpl implements IdrPsiFunctionCallPattern {
 
-  public IdrPsiDataDeclarationVariantImpl(@NotNull ASTNode node) {
+  public IdrPsiFunctionCallPatternImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitDataDeclarationVariant(this);
+    visitor.visitFunctionCallPattern(this);
   }
 
   @Override
@@ -29,8 +29,8 @@ public class IdrPsiDataDeclarationVariantImpl extends ASTWrapperPsiElement imple
 
   @Override
   @NotNull
-  public List<IdrPsiExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiExpression.class);
+  public IdrPsiFunctionCallExpression getFunctionCallExpression() {
+    return findNotNullChildByClass(IdrPsiFunctionCallExpression.class);
   }
 
 }
