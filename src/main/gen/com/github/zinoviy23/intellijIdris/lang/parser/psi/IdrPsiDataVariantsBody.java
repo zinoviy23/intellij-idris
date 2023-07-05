@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiDataDeclaration extends PsiElement {
+public interface IdrPsiDataVariantsBody extends IdrPsiDataBody {
 
-  @Nullable
-  IdrPsiDataBody getDataBody();
-
-  @Nullable
-  IdrPsiFunctionOptsList getFunctionOptsList();
+  @NotNull
+  List<IdrPsiDataDeclarationVariant> getDataDeclarationVariantList();
 
 }

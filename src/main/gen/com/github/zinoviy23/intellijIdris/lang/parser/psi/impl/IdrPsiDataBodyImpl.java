@@ -11,32 +11,20 @@ import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiDataDeclarationImpl extends ASTWrapperPsiElement implements IdrPsiDataDeclaration {
+public abstract class IdrPsiDataBodyImpl extends ASTWrapperPsiElement implements IdrPsiDataBody {
 
-  public IdrPsiDataDeclarationImpl(@NotNull ASTNode node) {
+  public IdrPsiDataBodyImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitDataDeclaration(this);
+    visitor.visitDataBody(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof IdrPsiVisitor) accept((IdrPsiVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public IdrPsiDataBody getDataBody() {
-    return findChildByClass(IdrPsiDataBody.class);
-  }
-
-  @Override
-  @Nullable
-  public IdrPsiFunctionOptsList getFunctionOptsList() {
-    return findChildByClass(IdrPsiFunctionOptsList.class);
   }
 
 }

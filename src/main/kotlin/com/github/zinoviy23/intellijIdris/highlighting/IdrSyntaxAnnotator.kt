@@ -1,5 +1,6 @@
 package com.github.zinoviy23.intellijIdris.highlighting
 
+import com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrPsiDataConstructorsBody
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrPsiDataDeclarationVariant
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrPsiFunctionMatch
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrPsiFunctionSpecification
@@ -14,15 +15,32 @@ import com.intellij.psi.util.PsiTreeUtil
 internal class IdrSyntaxAnnotator : Annotator, DumbAware  {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         when (element) {
-            is IdrPsiFunctionMatch, is IdrPsiFunctionSpecification -> highlightFunctionDeclarationName(element, holder)
-            is IdrPsiDataDeclarationVariant -> highlightDataVariant(element, holder)
+            is IdrPsiFunctionSpecification -> {
+                if (element.parent is IdrPsiDataConstructorsBody) {
+                    highlightDataConstructor(element, holder)
+                }
+                else {
+                    highlightFunctionDeclarationName(element, holder)
+                }
+            }
+            is IdrPsiFunctionMatch -> highlightFunctionDeclarationName(element, holder)
+            is IdrPsiDataDeclarationVariant -> highlightDataConstructor(element, holder)
             is IdrPsiHoleExpression -> highlightHole(element, holder)
             else -> return
         }
     }
 
-    private fun highlightDataVariant(dataDeclarationVariant: IdrPsiDataDeclarationVariant, holder: AnnotationHolder) {
-        val identifier = dataDeclarationVariant.firstChild
+    private fun highlightDataConstructor(element: PsiElement, holder: AnnotationHolder) {
+        val identifier = when (element) {
+            is IdrPsiDataDeclarationVariant -> element.firstChild
+            is IdrPsiFunctionSpecification -> {
+                element.functionOptsList?.nextSibling?.let {
+                    PsiTreeUtil.skipWhitespacesAndCommentsForward(it)
+                } ?: element.firstChild
+            }
+            else -> null
+        } ?: return
+
         holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
             .range(identifier.textRange)
             .textAttributes(IdrSyntaxHighlighter.DATA_CONSTRUCTOR)

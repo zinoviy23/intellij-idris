@@ -61,9 +61,23 @@ operator_declaration ::= (KW_INFIX | KW_PREFIX | KW_INFIXL | KW_INFIXR) INTEGER_
     pin = 1
 }
 
-data_declaration ::= [function_opts_list eol*] KW_DATA IDENTIFICATOR (IDENTIFICATOR)* indent? EQ_SIGN indent? data_declaration_variant (indent? OPT_SEP indent? data_declaration_variant)* {
+data_declaration ::= [function_opts_list eol*] KW_DATA IDENTIFICATOR (IDENTIFICATOR)* data_body {
     pin = 2
 }
+
+data_body ::= (data_variants_body | data_constructors_body)
+
+data_variants_body ::= indent? EQ_SIGN indent? data_declaration_variant (indent? OPT_SEP indent? data_declaration_variant)* {
+    pin = 2
+    extends=data_body
+}
+
+data_constructors_body ::= COLON_SIGN type_specification KW_WHERE data_constructors {
+    pin = 1
+    extends=data_body
+}
+
+private data_constructors ::= open (indented_start function_specification indented_end)* close
 
 data_declaration_variant ::= IDENTIFICATOR (simple_expression)*
 
@@ -73,8 +87,12 @@ type_specification ::= constraint_list? expression
 
 constraint_list ::= expression indent? ARROW_SIGN indent?
 
-function_match ::= IDENTIFICATOR (pattern)* indent? EQ_SIGN indent? expression [eol* function_where_block] {
+function_match ::= IDENTIFICATOR (pattern)* indent? match_body {
     pin=5
+}
+
+private match_body ::= EQ_SIGN indent? expression [eol* function_where_block] | KW_IMPOSSIBLE {
+    pin = 1
 }
 
 pattern ::= simple_expression_pattern | implicit_argument_pattern

@@ -12,8 +12,11 @@ public interface IdrTokenTypes {
   IElementType CASE_EXPRESSION = new IdrElementType("CASE_EXPRESSION");
   IElementType CHAR_LITERAL_EXPRESSION = new IdrElementType("CHAR_LITERAL_EXPRESSION");
   IElementType CONSTRAINT_LIST = new IdrElementType("CONSTRAINT_LIST");
+  IElementType DATA_BODY = new IdrElementType("DATA_BODY");
+  IElementType DATA_CONSTRUCTORS_BODY = new IdrElementType("DATA_CONSTRUCTORS_BODY");
   IElementType DATA_DECLARATION = new IdrElementType("DATA_DECLARATION");
   IElementType DATA_DECLARATION_VARIANT = new IdrElementType("DATA_DECLARATION_VARIANT");
+  IElementType DATA_VARIANTS_BODY = new IdrElementType("DATA_VARIANTS_BODY");
   IElementType DIRECTIVE = new IdrElementType("DIRECTIVE");
   IElementType ESCAPED_NAME_ID = new IdrElementType("ESCAPED_NAME_ID");
   IElementType EXPRESSION = new IdrElementType("EXPRESSION");
@@ -78,6 +81,7 @@ public interface IdrTokenTypes {
   IElementType KW_EXPORT = new IdrTokenType("KW_EXPORT");
   IElementType KW_IF = new IdrTokenType("KW_IF");
   IElementType KW_IMPORT = new IdrTokenType("KW_IMPORT");
+  IElementType KW_IMPOSSIBLE = new IdrTokenType("KW_IMPOSSIBLE");
   IElementType KW_IN = new IdrTokenType("KW_IN");
   IElementType KW_INFIX = new IdrTokenType("KW_INFIX");
   IElementType KW_INFIXL = new IdrTokenType("KW_INFIXL");
@@ -123,11 +127,17 @@ public interface IdrTokenTypes {
       else if (type == CONSTRAINT_LIST) {
         return new IdrPsiConstraintListImpl(node);
       }
+      else if (type == DATA_CONSTRUCTORS_BODY) {
+        return new IdrPsiDataConstructorsBodyImpl(node);
+      }
       else if (type == DATA_DECLARATION) {
         return new IdrPsiDataDeclarationImpl(node);
       }
       else if (type == DATA_DECLARATION_VARIANT) {
         return new IdrPsiDataDeclarationVariantImpl(node);
+      }
+      else if (type == DATA_VARIANTS_BODY) {
+        return new IdrPsiDataVariantsBodyImpl(node);
       }
       else if (type == DIRECTIVE) {
         return new IdrPsiDirectiveImpl(node);

@@ -57,6 +57,7 @@ internal class IdrSyntaxHighlighter : SyntaxHighlighterBase() {
                 KW_DATA,
                 KW_PRIVATE,
                 KW_PUBLIC,
+                KW_IMPOSSIBLE,
             )
             fillMap(map, LINE_COMMENT, LINE_COMMENT_START, LINE_COMMENT_TEXT)
             fillMap(map, DOC_COMMENT, DOC_COMMENT_TEXT, DOC_COMMENT_START)

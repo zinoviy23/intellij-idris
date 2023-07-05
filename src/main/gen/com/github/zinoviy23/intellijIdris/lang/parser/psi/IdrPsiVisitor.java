@@ -24,12 +24,24 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDataBody(@NotNull IdrPsiDataBody o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDataConstructorsBody(@NotNull IdrPsiDataConstructorsBody o) {
+    visitDataBody(o);
+  }
+
   public void visitDataDeclaration(@NotNull IdrPsiDataDeclaration o) {
     visitPsiElement(o);
   }
 
   public void visitDataDeclarationVariant(@NotNull IdrPsiDataDeclarationVariant o) {
     visitPsiElement(o);
+  }
+
+  public void visitDataVariantsBody(@NotNull IdrPsiDataVariantsBody o) {
+    visitDataBody(o);
   }
 
   public void visitDirective(@NotNull IdrPsiDirective o) {

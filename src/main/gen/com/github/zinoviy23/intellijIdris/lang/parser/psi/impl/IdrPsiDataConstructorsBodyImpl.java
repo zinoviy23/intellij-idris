@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiDataDeclarationImpl extends ASTWrapperPsiElement implements IdrPsiDataDeclaration {
+public class IdrPsiDataConstructorsBodyImpl extends IdrPsiDataBodyImpl implements IdrPsiDataConstructorsBody {
 
-  public IdrPsiDataDeclarationImpl(@NotNull ASTNode node) {
+  public IdrPsiDataConstructorsBodyImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitDataDeclaration(this);
+    visitor.visitDataConstructorsBody(this);
   }
 
   @Override
@@ -28,15 +28,15 @@ public class IdrPsiDataDeclarationImpl extends ASTWrapperPsiElement implements I
   }
 
   @Override
-  @Nullable
-  public IdrPsiDataBody getDataBody() {
-    return findChildByClass(IdrPsiDataBody.class);
+  @NotNull
+  public List<IdrPsiFunctionSpecification> getFunctionSpecificationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiFunctionSpecification.class);
   }
 
   @Override
   @Nullable
-  public IdrPsiFunctionOptsList getFunctionOptsList() {
-    return findChildByClass(IdrPsiFunctionOptsList.class);
+  public IdrPsiTypeSpecification getTypeSpecification() {
+    return findChildByClass(IdrPsiTypeSpecification.class);
   }
 
 }

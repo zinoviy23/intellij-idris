@@ -69,6 +69,7 @@ PLACEHOLDER=_
     "data"               { return KW_DATA; }
     "public"             { return KW_PUBLIC; }
     "private"            { return KW_PRIVATE; }
+    "impossible"         { return KW_IMPOSSIBLE; }
     {VARIDREGEXP}        { yybegin(IN_ID); return IDENTIFICATOR; }
     {INTEGER_LIT}        { return INTEGER_LITERAL; }
     "\""                 { yybegin(IN_STRING_LITERAL); return STRING_QUOTE; }
