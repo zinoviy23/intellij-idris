@@ -8,23 +8,29 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public abstract class IdrPsiParenExpressionImpl extends IdrPsiSimpleExpressionImpl implements IdrPsiParenExpression {
+public class IdrPsiRecordFieldImpl extends ASTWrapperPsiElement implements IdrPsiRecordField {
 
-  public IdrPsiParenExpressionImpl(@NotNull ASTNode node) {
+  public IdrPsiRecordFieldImpl(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitParenExpression(this);
+    visitor.visitRecordField(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof IdrPsiVisitor) accept((IdrPsiVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public IdrPsiTypeSpecification getTypeSpecification() {
+    return findNotNullChildByClass(IdrPsiTypeSpecification.class);
   }
 
 }

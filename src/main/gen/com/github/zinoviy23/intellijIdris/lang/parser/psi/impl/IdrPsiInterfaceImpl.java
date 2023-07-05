@@ -11,14 +11,14 @@ import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiParenExpressionEndImpl extends ASTWrapperPsiElement implements IdrPsiParenExpressionEnd {
+public class IdrPsiInterfaceImpl extends ASTWrapperPsiElement implements IdrPsiInterface {
 
-  public IdrPsiParenExpressionEndImpl(@NotNull ASTNode node) {
+  public IdrPsiInterfaceImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitParenExpressionEnd(this);
+    visitor.visitInterface(this);
   }
 
   @Override
@@ -29,14 +29,26 @@ public class IdrPsiParenExpressionEndImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public IdrPsiExpression getExpression() {
-    return findChildByClass(IdrPsiExpression.class);
+  public IdrPsiConstraintList getConstraintList() {
+    return findChildByClass(IdrPsiConstraintList.class);
   }
 
   @Override
   @Nullable
-  public IdrPsiExpressionList getExpressionList() {
-    return findChildByClass(IdrPsiExpressionList.class);
+  public IdrPsiFunctionOptsList getFunctionOptsList() {
+    return findChildByClass(IdrPsiFunctionOptsList.class);
+  }
+
+  @Override
+  @NotNull
+  public List<IdrPsiInterfaceArgument> getInterfaceArgumentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiInterfaceArgument.class);
+  }
+
+  @Override
+  @Nullable
+  public IdrPsiInterfaceBody getInterfaceBody() {
+    return findChildByClass(IdrPsiInterfaceBody.class);
   }
 
 }

@@ -24,12 +24,23 @@
         DOC_COMMENT_START="|||"
         DOC_COMMENT_TEXT="DOC_COMMENT_TEXT"
         EOL="EOL"
+        MULTILINE_COMMENT_START="{-"
+        MULTILINE_COMMENT_END="-}"
+        MULTILINE_COMMENT_TEXT="MULTILINE_COMMENT_TEXT"
     ]
 }
 
 file ::= eol* (module_statement eol+)? top_level ((eol+ top_level) | eol+ <<eof>>)*
 
-private top_level ::= directive | import_statement | data_declaration | operator_declaration | function_specification | function_match
+private top_level ::= directive |
+                      import_statement |
+                      data_declaration |
+                      operator_declaration |
+                      function_specification |
+                      interface_implementation |
+                      record_declaration |
+                      interface |
+                      function_match
 
 module_statement ::= KW_MODULE identificator_reference {
     pin = 1
@@ -43,7 +54,9 @@ directive ::= DIRECTIVE_START DIRECTIVE_TYPE DIRECTIVE_CONTENT {
     pin = 1
 }
 
-function_specification ::= [function_opts_list eol*] IDENTIFICATOR COLON_SIGN type_specification
+interface_implementation ::= [function_opts_list eol*] KW_IMPLEMENTATION? type_specification KW_WHERE open (indented_start function_match indented_end)* close
+
+function_specification ::= [function_opts_list eol*] (IDENTIFICATOR | operator_paren_expression) COLON_SIGN type_specification
 {
     pin = 3
 }
@@ -60,6 +73,8 @@ identificator_reference ::= IDENTIFICATOR (IDENTIFICATOR_SEP IDENTIFICATOR)*
 operator_declaration ::= (KW_INFIX | KW_PREFIX | KW_INFIXL | KW_INFIXR) INTEGER_LITERAL operator_list {
     pin = 1
 }
+
+operator_list ::= OPERATOR (COMMA OPERATOR)*
 
 data_declaration ::= [function_opts_list eol*] KW_DATA IDENTIFICATOR (IDENTIFICATOR)* data_body {
     pin = 2
@@ -79,25 +94,44 @@ data_constructors_body ::= COLON_SIGN type_specification KW_WHERE data_construct
 
 private data_constructors ::= open (indented_start function_specification indented_end)* close
 
-data_declaration_variant ::= IDENTIFICATOR (simple_expression)*
+data_declaration_variant ::= (IDENTIFICATOR | operator_paren_expression) (simple_expression)*
 
-operator_list ::= OPERATOR (COMMA OPERATOR)*
+record_declaration ::= [function_opts_list eol*] KW_RECORD IDENTIFICATOR type_specification KW_WHERE open
+ record_constructor
+ (indented_start record_field indented_end)*
+close {
+    pin = 2
+}
+
+record_constructor ::= KW_CONSTRUCTOR IDENTIFICATOR {
+    pin = 1
+}
+
+record_field ::= IDENTIFICATOR (COMMA IDENTIFICATOR)* COLON_SIGN type_specification
+
+interface ::= [function_opts_list eol*] KW_INTERFACE constraint_list? IDENTIFICATOR interface_argument* KW_WHERE interface_body {
+    pin=2
+}
+
+interface_argument ::= IDENTIFICATOR | LPAR IDENTIFICATOR COLON_SIGN type_specification RPAR
+
+interface_body ::= open (indented_start (function_specification | function_match) indented_end)* close
 
 type_specification ::= constraint_list? expression
 
 constraint_list ::= expression indent? ARROW_SIGN indent?
 
-function_match ::= IDENTIFICATOR (pattern)* indent? match_body {
+function_match ::= (IDENTIFICATOR | operator_paren_expression ) (pattern)* indent? match_body {
     pin=5
 }
 
-private match_body ::= EQ_SIGN indent? expression [eol* function_where_block] | KW_IMPOSSIBLE {
+private match_body ::= KW_IMPOSSIBLE eol? | EQ_SIGN indent? expression [eol* function_where_block] {
     pin = 1
 }
 
 pattern ::= simple_expression_pattern | implicit_argument_pattern
 simple_expression_pattern ::= simple_expression
-implicit_argument_pattern ::= LBRACE IDENTIFICATOR [EQ_SIGN simple_expression] RBRACE {
+implicit_argument_pattern ::= LBRACE IDENTIFICATOR [EQ_SIGN (function_call_expression | simple_expression)] RBRACE {
     pin=1
 }
 function_call_pattern ::= function_call_expression
@@ -136,7 +170,7 @@ private kw_expr ::= if_expression |
                     let_expression
 
 
-let_expression ::= KW_LET open (indented_start let_entry indented_end)+ close KW_IN eol* expression {
+let_expression ::= KW_LET open (indented_start let_entry indented_end)+ close eol* KW_IN eol* expression {
     pin = 1
 }
 
@@ -175,16 +209,27 @@ char_literal_expression ::= CHAR_QUOTE CHAR_CONTENT CHAR_QUOTE {
     extends=simple_expression
 }
 
-paren_expression ::= LPAR eol* paren_expression_end {
-    pin = 1
+paren_expression ::= empty_tuple_paren_expression | operator_paren_expression | name_paren_expression | default_paren_expression | tuple_parent_expression {
     extends=simple_expression
 }
 
-paren_expression_end ::= RPAR |
-                         OPERATOR RPAR |
-                         IDENTIFICATOR COLON_SIGN expression RPAR |
-                         expression RPAR |
-                         expression_list RPAR
+empty_tuple_paren_expression ::= LPAR RPAR {
+    extends = paren_expression
+}
+
+operator_paren_expression ::= LPAR OPERATOR RPAR {
+    extends = paren_expression
+}
+
+name_paren_expression ::= LPAR IDENTIFICATOR COLON_SIGN eol* expression RPAR {
+    extends = paren_expression
+}
+
+default_paren_expression ::= LPAR eol* expression RPAR {
+    extends = paren_expression
+}
+
+tuple_parent_expression ::= LPAR eol* expression_list RPAR
 
 expression_list ::= expression (COMMA expression)+
 
@@ -203,7 +248,7 @@ case_expression ::= KW_CASE eol* expression eol* KW_OF case_body
 private case_body ::= open (indented_start case_entry indented_end)* close
 case_entry ::= (function_call_pattern | pattern) ARROW_SIGN expression
 
-list_literal_expression ::= LBRACKET [expression (COMMA expression)*] RBRACKET {
+list_literal_expression ::= LBRACKET [eol* expression (eol* COMMA eol* expression)*] eol* RBRACKET {
     pin = 1
     extends=simple_expression
 }

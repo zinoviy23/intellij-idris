@@ -28,7 +28,10 @@ internal class IdrParserDefinition : ParserDefinition {
         IdrTokenTypes.LINE_COMMENT_TEXT,
         IdrTokenTypes.DOC_COMMENT_TEXT,
         IdrTokenTypes.DOC_COMMENT_START,
-        IdrTokenTypes.LINE_COMMENT_START
+        IdrTokenTypes.LINE_COMMENT_START,
+        IdrTokenTypes.MULTILINE_COMMENT_START,
+        IdrTokenTypes.MULTILINE_COMMENT_END,
+        IdrTokenTypes.MULTILINE_COMMENT_TEXT
     )
 
     override fun getStringLiteralElements(): TokenSet = TokenSet.create(IdrTokenTypes.STRING_CONTENT, IdrTokenTypes.STRING_QUOTE)

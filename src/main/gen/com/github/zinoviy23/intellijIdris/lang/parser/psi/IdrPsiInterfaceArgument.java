@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiParenExpressionEnd extends PsiElement {
+public interface IdrPsiInterfaceArgument extends PsiElement {
 
   @Nullable
-  IdrPsiExpression getExpression();
-
-  @Nullable
-  IdrPsiExpressionList getExpressionList();
+  IdrPsiTypeSpecification getTypeSpecification();
 
 }

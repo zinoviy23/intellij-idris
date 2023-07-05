@@ -52,5 +52,11 @@ class IdrFileParserTest : ParsingTestCase("parser", "idr", true, IdrParserDefini
 
     fun testFunctionWithWhere() = doTest(true)
 
+    fun testRecord() = doTest(true)
+
+    fun testImplementation() = doTest(true)
+
+    fun testImplementationImpossible() = doTest(true)
+
     override fun getTestDataPath() = "src/test/testData"
 }

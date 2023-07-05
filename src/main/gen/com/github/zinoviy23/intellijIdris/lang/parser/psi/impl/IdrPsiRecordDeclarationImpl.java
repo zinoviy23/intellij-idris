@@ -11,14 +11,14 @@ import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiFunctionSpecificationImpl extends ASTWrapperPsiElement implements IdrPsiFunctionSpecification {
+public class IdrPsiRecordDeclarationImpl extends ASTWrapperPsiElement implements IdrPsiRecordDeclaration {
 
-  public IdrPsiFunctionSpecificationImpl(@NotNull ASTNode node) {
+  public IdrPsiRecordDeclarationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitFunctionSpecification(this);
+    visitor.visitRecordDeclaration(this);
   }
 
   @Override
@@ -35,8 +35,14 @@ public class IdrPsiFunctionSpecificationImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
-  public IdrPsiOperatorParenExpression getOperatorParenExpression() {
-    return findChildByClass(IdrPsiOperatorParenExpression.class);
+  public IdrPsiRecordConstructor getRecordConstructor() {
+    return findChildByClass(IdrPsiRecordConstructor.class);
+  }
+
+  @Override
+  @NotNull
+  public List<IdrPsiRecordField> getRecordFieldList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiRecordField.class);
   }
 
   @Override

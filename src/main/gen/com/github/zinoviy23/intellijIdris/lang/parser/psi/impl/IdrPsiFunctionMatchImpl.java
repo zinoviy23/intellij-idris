@@ -28,9 +28,9 @@ public class IdrPsiFunctionMatchImpl extends ASTWrapperPsiElement implements Idr
   }
 
   @Override
-  @Nullable
-  public IdrPsiExpression getExpression() {
-    return findChildByClass(IdrPsiExpression.class);
+  @NotNull
+  public List<IdrPsiExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiExpression.class);
   }
 
   @Override

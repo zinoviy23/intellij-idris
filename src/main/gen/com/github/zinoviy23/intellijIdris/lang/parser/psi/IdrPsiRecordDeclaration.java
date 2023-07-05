@@ -5,13 +5,16 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiFunctionSpecification extends PsiElement {
+public interface IdrPsiRecordDeclaration extends PsiElement {
 
   @Nullable
   IdrPsiFunctionOptsList getFunctionOptsList();
 
   @Nullable
-  IdrPsiOperatorParenExpression getOperatorParenExpression();
+  IdrPsiRecordConstructor getRecordConstructor();
+
+  @NotNull
+  List<IdrPsiRecordField> getRecordFieldList();
 
   @Nullable
   IdrPsiTypeSpecification getTypeSpecification();

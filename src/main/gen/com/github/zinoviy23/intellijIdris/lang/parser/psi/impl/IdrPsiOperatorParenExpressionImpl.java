@@ -10,15 +10,15 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public abstract class IdrPsiParenExpressionImpl extends IdrPsiSimpleExpressionImpl implements IdrPsiParenExpression {
+public class IdrPsiOperatorParenExpressionImpl extends IdrPsiParenExpressionImpl implements IdrPsiOperatorParenExpression {
 
-  public IdrPsiParenExpressionImpl(@NotNull ASTNode node) {
+  public IdrPsiOperatorParenExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitParenExpression(this);
+    visitor.visitOperatorParenExpression(this);
   }
 
   @Override

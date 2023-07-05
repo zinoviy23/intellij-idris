@@ -7,7 +7,7 @@ import com.intellij.psi.PsiFileFactory
 object IdrPsiElementFactory {
     fun createIdExpression(project: Project, name: String): IdrPsiIdExpression {
         val file = createFile(project, "a = $name")
-        return (file.firstChild as IdrPsiFunctionMatch).expression as IdrPsiIdExpression
+        return (file.firstChild as IdrPsiFunctionMatch).expressionList[0] as IdrPsiIdExpression
     }
 
     fun createFile(project: Project, text: String): IdrPsiFile {

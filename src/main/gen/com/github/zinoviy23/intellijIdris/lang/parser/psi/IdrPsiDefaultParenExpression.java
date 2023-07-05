@@ -5,15 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiFunctionMatch extends PsiElement {
+public interface IdrPsiDefaultParenExpression extends IdrPsiParenExpression {
 
   @NotNull
-  List<IdrPsiExpression> getExpressionList();
-
-  @Nullable
-  IdrPsiFunctionWhereBlock getFunctionWhereBlock();
-
-  @NotNull
-  List<IdrPsiPattern> getPatternList();
+  IdrPsiExpression getExpression();
 
 }

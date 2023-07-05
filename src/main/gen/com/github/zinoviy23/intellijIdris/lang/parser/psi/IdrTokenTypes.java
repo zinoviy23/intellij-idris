@@ -17,7 +17,9 @@ public interface IdrTokenTypes {
   IElementType DATA_DECLARATION = new IdrElementType("DATA_DECLARATION");
   IElementType DATA_DECLARATION_VARIANT = new IdrElementType("DATA_DECLARATION_VARIANT");
   IElementType DATA_VARIANTS_BODY = new IdrElementType("DATA_VARIANTS_BODY");
+  IElementType DEFAULT_PAREN_EXPRESSION = new IdrElementType("DEFAULT_PAREN_EXPRESSION");
   IElementType DIRECTIVE = new IdrElementType("DIRECTIVE");
+  IElementType EMPTY_TUPLE_PAREN_EXPRESSION = new IdrElementType("EMPTY_TUPLE_PAREN_EXPRESSION");
   IElementType ESCAPED_NAME_ID = new IdrElementType("ESCAPED_NAME_ID");
   IElementType EXPRESSION = new IdrElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new IdrElementType("EXPRESSION_LIST");
@@ -36,23 +38,32 @@ public interface IdrTokenTypes {
   IElementType IMPLICIT_ARGUMENT_PATTERN = new IdrElementType("IMPLICIT_ARGUMENT_PATTERN");
   IElementType IMPORT_STATEMENT = new IdrElementType("IMPORT_STATEMENT");
   IElementType INTEGER_LITERAL_EXPRESSION = new IdrElementType("INTEGER_LITERAL_EXPRESSION");
+  IElementType INTERFACE = new IdrElementType("INTERFACE");
+  IElementType INTERFACE_ARGUMENT = new IdrElementType("INTERFACE_ARGUMENT");
+  IElementType INTERFACE_BODY = new IdrElementType("INTERFACE_BODY");
+  IElementType INTERFACE_IMPLEMENTATION = new IdrElementType("INTERFACE_IMPLEMENTATION");
   IElementType LAMBDA_EXPRESSION = new IdrElementType("LAMBDA_EXPRESSION");
   IElementType LET_ENTRY = new IdrElementType("LET_ENTRY");
   IElementType LET_EXPRESSION = new IdrElementType("LET_EXPRESSION");
   IElementType LIST_LITERAL_EXPRESSION = new IdrElementType("LIST_LITERAL_EXPRESSION");
   IElementType MODULE_STATEMENT = new IdrElementType("MODULE_STATEMENT");
   IElementType NAMED_PATTERN_EXPRESSION = new IdrElementType("NAMED_PATTERN_EXPRESSION");
+  IElementType NAME_PAREN_EXPRESSION = new IdrElementType("NAME_PAREN_EXPRESSION");
   IElementType OPERATOR_DECLARATION = new IdrElementType("OPERATOR_DECLARATION");
   IElementType OPERATOR_ELEMENT = new IdrElementType("OPERATOR_ELEMENT");
   IElementType OPERATOR_EXPRESSION = new IdrElementType("OPERATOR_EXPRESSION");
   IElementType OPERATOR_LIST = new IdrElementType("OPERATOR_LIST");
+  IElementType OPERATOR_PAREN_EXPRESSION = new IdrElementType("OPERATOR_PAREN_EXPRESSION");
   IElementType PAREN_EXPRESSION = new IdrElementType("PAREN_EXPRESSION");
-  IElementType PAREN_EXPRESSION_END = new IdrElementType("PAREN_EXPRESSION_END");
   IElementType PATTERN = new IdrElementType("PATTERN");
   IElementType PLACEHOLDER_EXPRESSION = new IdrElementType("PLACEHOLDER_EXPRESSION");
+  IElementType RECORD_CONSTRUCTOR = new IdrElementType("RECORD_CONSTRUCTOR");
+  IElementType RECORD_DECLARATION = new IdrElementType("RECORD_DECLARATION");
+  IElementType RECORD_FIELD = new IdrElementType("RECORD_FIELD");
   IElementType SIMPLE_EXPRESSION = new IdrElementType("SIMPLE_EXPRESSION");
   IElementType SIMPLE_EXPRESSION_PATTERN = new IdrElementType("SIMPLE_EXPRESSION_PATTERN");
   IElementType STRING_LITERAL_EXPRESSION = new IdrElementType("STRING_LITERAL_EXPRESSION");
+  IElementType TUPLE_PARENT_EXPRESSION = new IdrElementType("TUPLE_PARENT_EXPRESSION");
   IElementType TYPE_EXPRESSION = new IdrElementType("TYPE_EXPRESSION");
   IElementType TYPE_SPECIFICATION = new IdrElementType("TYPE_SPECIFICATION");
 
@@ -76,16 +87,19 @@ public interface IdrTokenTypes {
   IElementType IDENTIFICATOR_SEP = new IdrTokenType("IDENTIFICATOR_SEP");
   IElementType INTEGER_LITERAL = new IdrTokenType("INTEGER_LITERAL");
   IElementType KW_CASE = new IdrTokenType("KW_CASE");
+  IElementType KW_CONSTRUCTOR = new IdrTokenType("KW_CONSTRUCTOR");
   IElementType KW_DATA = new IdrTokenType("KW_DATA");
   IElementType KW_ELSE = new IdrTokenType("KW_ELSE");
   IElementType KW_EXPORT = new IdrTokenType("KW_EXPORT");
   IElementType KW_IF = new IdrTokenType("KW_IF");
+  IElementType KW_IMPLEMENTATION = new IdrTokenType("KW_IMPLEMENTATION");
   IElementType KW_IMPORT = new IdrTokenType("KW_IMPORT");
   IElementType KW_IMPOSSIBLE = new IdrTokenType("KW_IMPOSSIBLE");
   IElementType KW_IN = new IdrTokenType("KW_IN");
   IElementType KW_INFIX = new IdrTokenType("KW_INFIX");
   IElementType KW_INFIXL = new IdrTokenType("KW_INFIXL");
   IElementType KW_INFIXR = new IdrTokenType("KW_INFIXR");
+  IElementType KW_INTERFACE = new IdrTokenType("KW_INTERFACE");
   IElementType KW_LET = new IdrTokenType("KW_LET");
   IElementType KW_MODULE = new IdrTokenType("KW_MODULE");
   IElementType KW_OF = new IdrTokenType("KW_OF");
@@ -93,6 +107,7 @@ public interface IdrTokenTypes {
   IElementType KW_PREFIX = new IdrTokenType("KW_PREFIX");
   IElementType KW_PRIVATE = new IdrTokenType("KW_PRIVATE");
   IElementType KW_PUBLIC = new IdrTokenType("KW_PUBLIC");
+  IElementType KW_RECORD = new IdrTokenType("KW_RECORD");
   IElementType KW_THEN = new IdrTokenType("KW_THEN");
   IElementType KW_TOTAL = new IdrTokenType("KW_TOTAL");
   IElementType KW_WHERE = new IdrTokenType("KW_WHERE");
@@ -101,6 +116,9 @@ public interface IdrTokenTypes {
   IElementType LINE_COMMENT_START = new IdrTokenType("--");
   IElementType LINE_COMMENT_TEXT = new IdrTokenType("LINE_COMMENT_TEXT");
   IElementType LPAR = new IdrTokenType("LPAR");
+  IElementType MULTILINE_COMMENT_END = new IdrTokenType("-}");
+  IElementType MULTILINE_COMMENT_START = new IdrTokenType("{-");
+  IElementType MULTILINE_COMMENT_TEXT = new IdrTokenType("MULTILINE_COMMENT_TEXT");
   IElementType OPERATOR = new IdrTokenType("OPERATOR");
   IElementType OPT_SEP = new IdrTokenType("OPT_SEP");
   IElementType PATTERN_NAME_SEP = new IdrTokenType("PATTERN_NAME_SEP");
@@ -139,8 +157,14 @@ public interface IdrTokenTypes {
       else if (type == DATA_VARIANTS_BODY) {
         return new IdrPsiDataVariantsBodyImpl(node);
       }
+      else if (type == DEFAULT_PAREN_EXPRESSION) {
+        return new IdrPsiDefaultParenExpressionImpl(node);
+      }
       else if (type == DIRECTIVE) {
         return new IdrPsiDirectiveImpl(node);
+      }
+      else if (type == EMPTY_TUPLE_PAREN_EXPRESSION) {
+        return new IdrPsiEmptyTupleParenExpressionImpl(node);
       }
       else if (type == ESCAPED_NAME_ID) {
         return new IdrPsiEscapedNameIdImpl(node);
@@ -196,6 +220,18 @@ public interface IdrTokenTypes {
       else if (type == INTEGER_LITERAL_EXPRESSION) {
         return new IdrPsiIntegerLiteralExpressionImpl(node);
       }
+      else if (type == INTERFACE) {
+        return new IdrPsiInterfaceImpl(node);
+      }
+      else if (type == INTERFACE_ARGUMENT) {
+        return new IdrPsiInterfaceArgumentImpl(node);
+      }
+      else if (type == INTERFACE_BODY) {
+        return new IdrPsiInterfaceBodyImpl(node);
+      }
+      else if (type == INTERFACE_IMPLEMENTATION) {
+        return new IdrPsiInterfaceImplementationImpl(node);
+      }
       else if (type == LAMBDA_EXPRESSION) {
         return new IdrPsiLambdaExpressionImpl(node);
       }
@@ -214,6 +250,9 @@ public interface IdrTokenTypes {
       else if (type == NAMED_PATTERN_EXPRESSION) {
         return new IdrPsiNamedPatternExpressionImpl(node);
       }
+      else if (type == NAME_PAREN_EXPRESSION) {
+        return new IdrPsiNameParenExpressionImpl(node);
+      }
       else if (type == OPERATOR_DECLARATION) {
         return new IdrPsiOperatorDeclarationImpl(node);
       }
@@ -226,20 +265,29 @@ public interface IdrTokenTypes {
       else if (type == OPERATOR_LIST) {
         return new IdrPsiOperatorListImpl(node);
       }
-      else if (type == PAREN_EXPRESSION) {
-        return new IdrPsiParenExpressionImpl(node);
-      }
-      else if (type == PAREN_EXPRESSION_END) {
-        return new IdrPsiParenExpressionEndImpl(node);
+      else if (type == OPERATOR_PAREN_EXPRESSION) {
+        return new IdrPsiOperatorParenExpressionImpl(node);
       }
       else if (type == PLACEHOLDER_EXPRESSION) {
         return new IdrPsiPlaceholderExpressionImpl(node);
+      }
+      else if (type == RECORD_CONSTRUCTOR) {
+        return new IdrPsiRecordConstructorImpl(node);
+      }
+      else if (type == RECORD_DECLARATION) {
+        return new IdrPsiRecordDeclarationImpl(node);
+      }
+      else if (type == RECORD_FIELD) {
+        return new IdrPsiRecordFieldImpl(node);
       }
       else if (type == SIMPLE_EXPRESSION_PATTERN) {
         return new IdrPsiSimpleExpressionPatternImpl(node);
       }
       else if (type == STRING_LITERAL_EXPRESSION) {
         return new IdrPsiStringLiteralExpressionImpl(node);
+      }
+      else if (type == TUPLE_PARENT_EXPRESSION) {
+        return new IdrPsiTupleParentExpressionImpl(node);
       }
       else if (type == TYPE_EXPRESSION) {
         return new IdrPsiTypeExpressionImpl(node);
