@@ -7,7 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface IdrPsiIfExpression extends IdrPsiExpression {
 
-  @NotNull
-  List<IdrPsiExpression> getExpressionList();
+  @Nullable
+  IdrPsiExpression getExpression();
+
+  @Nullable
+  IdrPsiIfElseBranch getIfElseBranch();
+
+  @Nullable
+  IdrPsiIfThenBranch getIfThenBranch();
 
 }

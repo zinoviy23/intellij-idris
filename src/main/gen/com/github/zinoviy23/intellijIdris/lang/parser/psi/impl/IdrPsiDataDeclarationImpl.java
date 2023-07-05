@@ -33,4 +33,10 @@ public class IdrPsiDataDeclarationImpl extends ASTWrapperPsiElement implements I
     return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiDataDeclarationVariant.class);
   }
 
+  @Override
+  @Nullable
+  public IdrPsiFunctionOptsList getFunctionOptsList() {
+    return findChildByClass(IdrPsiFunctionOptsList.class);
+  }
+
 }

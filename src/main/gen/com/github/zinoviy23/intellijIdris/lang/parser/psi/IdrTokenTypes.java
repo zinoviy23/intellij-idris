@@ -15,7 +15,6 @@ public interface IdrTokenTypes {
   IElementType DATA_DECLARATION = new IdrElementType("DATA_DECLARATION");
   IElementType DATA_DECLARATION_VARIANT = new IdrElementType("DATA_DECLARATION_VARIANT");
   IElementType DIRECTIVE = new IdrElementType("DIRECTIVE");
-  IElementType ESCAPED_FUNCTION_CALL_EXPRESSION = new IdrElementType("ESCAPED_FUNCTION_CALL_EXPRESSION");
   IElementType ESCAPED_NAME_ID = new IdrElementType("ESCAPED_NAME_ID");
   IElementType EXPRESSION = new IdrElementType("EXPRESSION");
   IElementType EXPRESSION_LIST = new IdrElementType("EXPRESSION_LIST");
@@ -27,7 +26,9 @@ public interface IdrTokenTypes {
   IElementType HOLE_EXPRESSION = new IdrElementType("HOLE_EXPRESSION");
   IElementType IDENTIFICATOR_REFERENCE = new IdrElementType("IDENTIFICATOR_REFERENCE");
   IElementType ID_EXPRESSION = new IdrElementType("ID_EXPRESSION");
+  IElementType IF_ELSE_BRANCH = new IdrElementType("IF_ELSE_BRANCH");
   IElementType IF_EXPRESSION = new IdrElementType("IF_EXPRESSION");
+  IElementType IF_THEN_BRANCH = new IdrElementType("IF_THEN_BRANCH");
   IElementType IMPLICIT_ARGUMENT_PATTERN = new IdrElementType("IMPLICIT_ARGUMENT_PATTERN");
   IElementType IMPORT_STATEMENT = new IdrElementType("IMPORT_STATEMENT");
   IElementType INTEGER_LITERAL_EXPRESSION = new IdrElementType("INTEGER_LITERAL_EXPRESSION");
@@ -38,6 +39,7 @@ public interface IdrTokenTypes {
   IElementType MODULE_STATEMENT = new IdrElementType("MODULE_STATEMENT");
   IElementType NAMED_PATTERN = new IdrElementType("NAMED_PATTERN");
   IElementType OPERATOR_DECLARATION = new IdrElementType("OPERATOR_DECLARATION");
+  IElementType OPERATOR_ELEMENT = new IdrElementType("OPERATOR_ELEMENT");
   IElementType OPERATOR_EXPRESSION = new IdrElementType("OPERATOR_EXPRESSION");
   IElementType OPERATOR_LIST = new IdrElementType("OPERATOR_LIST");
   IElementType PAREN_EXPRESSION = new IdrElementType("PAREN_EXPRESSION");
@@ -84,6 +86,8 @@ public interface IdrTokenTypes {
   IElementType KW_OF = new IdrTokenType("KW_OF");
   IElementType KW_PARTIAL = new IdrTokenType("KW_PARTIAL");
   IElementType KW_PREFIX = new IdrTokenType("KW_PREFIX");
+  IElementType KW_PRIVATE = new IdrTokenType("KW_PRIVATE");
+  IElementType KW_PUBLIC = new IdrTokenType("KW_PUBLIC");
   IElementType KW_THEN = new IdrTokenType("KW_THEN");
   IElementType KW_TOTAL = new IdrTokenType("KW_TOTAL");
   IElementType KW_WHERE = new IdrTokenType("KW_WHERE");
@@ -92,7 +96,6 @@ public interface IdrTokenTypes {
   IElementType LINE_COMMENT_START = new IdrTokenType("--");
   IElementType LINE_COMMENT_TEXT = new IdrTokenType("LINE_COMMENT_TEXT");
   IElementType LPAR = new IdrTokenType("LPAR");
-  IElementType OPEN = new IdrTokenType("OPEN");
   IElementType OPERATOR = new IdrTokenType("OPERATOR");
   IElementType OPT_SEP = new IdrTokenType("OPT_SEP");
   IElementType PATTERN_NAME_SEP = new IdrTokenType("PATTERN_NAME_SEP");
@@ -128,9 +131,6 @@ public interface IdrTokenTypes {
       else if (type == DIRECTIVE) {
         return new IdrPsiDirectiveImpl(node);
       }
-      else if (type == ESCAPED_FUNCTION_CALL_EXPRESSION) {
-        return new IdrPsiEscapedFunctionCallExpressionImpl(node);
-      }
       else if (type == ESCAPED_NAME_ID) {
         return new IdrPsiEscapedNameIdImpl(node);
       }
@@ -164,8 +164,14 @@ public interface IdrTokenTypes {
       else if (type == ID_EXPRESSION) {
         return new IdrPsiIdExpressionImpl(node);
       }
+      else if (type == IF_ELSE_BRANCH) {
+        return new IdrPsiIfElseBranchImpl(node);
+      }
       else if (type == IF_EXPRESSION) {
         return new IdrPsiIfExpressionImpl(node);
+      }
+      else if (type == IF_THEN_BRANCH) {
+        return new IdrPsiIfThenBranchImpl(node);
       }
       else if (type == IMPLICIT_ARGUMENT_PATTERN) {
         return new IdrPsiImplicitArgumentPatternImpl(node);
@@ -196,6 +202,9 @@ public interface IdrTokenTypes {
       }
       else if (type == OPERATOR_DECLARATION) {
         return new IdrPsiOperatorDeclarationImpl(node);
+      }
+      else if (type == OPERATOR_ELEMENT) {
+        return new IdrPsiOperatorElementImpl(node);
       }
       else if (type == OPERATOR_EXPRESSION) {
         return new IdrPsiOperatorExpressionImpl(node);

@@ -1,5 +1,6 @@
 package com.github.zinoviy23.intellijIdris.lang.parser.psi
 
+import com.intellij.lang.PsiBuilder
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference

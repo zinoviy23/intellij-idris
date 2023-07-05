@@ -9,44 +9,6 @@ import static com.intellij.psi.TokenType.BAD_CHARACTER;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
 %%
 
-%{
-    private ArrayDeque<Integer> indentationLevel = new ArrayDeque<>();
-
-    private void handleWhiteSpace() {
-        var len = yylength();
-        if (indentationLevel.isEmpty()) {
-            indentationLevel.addLast(len);
-            yybegin(IN_OPEN);
-            return;
-        }
-        var last = indentationLevel.getLast();
-        if (last < len) {
-            indentationLevel.addLast(len);
-            yybegin(IN_OPEN);
-        }
-        else if (last == len) {
-            yybegin(IN_OPEN);
-        }
-        else if (last > len) {
-            indentationLevel.removeLast();
-        }
-    }
-
-    private IElementType handleClose() {
-        if (!indentationLevel.isEmpty()) {
-            indentationLevel.clear();
-            return null;
-        }
-        return null;
-    }
-
-    private IElementType l() {
-        yybegin(IN_LINE);
-        yypushback(yylength());
-        return handleClose();
-    }
-%}
-
 %class _IdrLexer
 %implements FlexLexer
 %unicode
@@ -70,7 +32,6 @@ PLACEHOLDER=_
 %state IN_DIRECTIVE_START
 %state IN_DIRECTIVE
 %state IN_STRING_LITERAL
-%state IN_OPEN
 %state IN_LINE
 %state IN_ESCAPED_NAME
 %state IN_CHAR_LITERAL
@@ -78,8 +39,8 @@ PLACEHOLDER=_
 %%
 <YYINITIAL> {
     {EOL}                { return EOL; }
-    {WHITE_SPACE}+       { handleWhiteSpace(); return WHITE_SPACE; }
-    [^]                  { var l = l(); if (l != null) return l; }
+    {WHITE_SPACE}+       { return WHITE_SPACE; }
+    [^]                  { yypushback(1); yybegin(IN_LINE); }
 }
 
 <IN_LINE> {
@@ -106,6 +67,8 @@ PLACEHOLDER=_
     "partial"            { return KW_PARTIAL; }
     "total"              { return KW_TOTAL; }
     "data"               { return KW_DATA; }
+    "public"             { return KW_PUBLIC; }
+    "private"            { return KW_PRIVATE; }
     {VARIDREGEXP}        { yybegin(IN_ID); return IDENTIFICATOR; }
     {INTEGER_LIT}        { return INTEGER_LITERAL; }
     "\""                 { yybegin(IN_STRING_LITERAL); return STRING_QUOTE; }
@@ -191,16 +154,8 @@ PLACEHOLDER=_
 
 <IN_CHAR_LITERAL> {
     {EOL}      { yybegin(YYINITIAL); return EOL; }
+    "\\'"      { return CHAR_CONTENT; }
+    "\\\\"     { return CHAR_CONTENT; }
     "'"        { yybegin(IN_LINE); return CHAR_QUOTE; }
     [^\n\r']   { return CHAR_CONTENT; }
 }
-
-
-
-<IN_OPEN> {
-    [^]   { yypushback(1); yybegin(IN_LINE); return OPEN; }
-}
-
-<<EOF>>   {
-          var l = handleClose(); return l;
-      }

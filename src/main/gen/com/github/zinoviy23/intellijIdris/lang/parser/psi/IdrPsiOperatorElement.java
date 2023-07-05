@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface IdrPsiEscapedFunctionCallExpression extends IdrPsiExpression {
+public interface IdrPsiOperatorElement extends PsiElement {
 
-  @NotNull
+  @Nullable
   IdrPsiEscapedNameId getEscapedNameId();
-
-  @NotNull
-  List<IdrPsiExpression> getExpressionList();
 
 }

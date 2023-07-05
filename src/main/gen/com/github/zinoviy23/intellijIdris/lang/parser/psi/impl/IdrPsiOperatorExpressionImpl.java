@@ -33,4 +33,10 @@ public class IdrPsiOperatorExpressionImpl extends IdrPsiExpressionImpl implement
     return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiExpression.class);
   }
 
+  @Override
+  @NotNull
+  public List<IdrPsiOperatorElement> getOperatorElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiOperatorElement.class);
+  }
+
 }

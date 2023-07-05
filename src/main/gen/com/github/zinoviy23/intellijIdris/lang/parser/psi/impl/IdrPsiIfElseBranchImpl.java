@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiEscapedFunctionCallExpressionImpl extends IdrPsiExpressionImpl implements IdrPsiEscapedFunctionCallExpression {
+public class IdrPsiIfElseBranchImpl extends ASTWrapperPsiElement implements IdrPsiIfElseBranch {
 
-  public IdrPsiEscapedFunctionCallExpressionImpl(@NotNull ASTNode node) {
+  public IdrPsiIfElseBranchImpl(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitEscapedFunctionCallExpression(this);
+    visitor.visitIfElseBranch(this);
   }
 
   @Override
@@ -28,15 +28,9 @@ public class IdrPsiEscapedFunctionCallExpressionImpl extends IdrPsiExpressionImp
   }
 
   @Override
-  @NotNull
-  public IdrPsiEscapedNameId getEscapedNameId() {
-    return findNotNullChildByClass(IdrPsiEscapedNameId.class);
-  }
-
-  @Override
-  @NotNull
-  public List<IdrPsiExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, IdrPsiExpression.class);
+  @Nullable
+  public IdrPsiExpression getExpression() {
+    return findChildByClass(IdrPsiExpression.class);
   }
 
 }

@@ -8,17 +8,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.zinoviy23.intellijIdris.lang.parser.psi.IdrTokenTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.github.zinoviy23.intellijIdris.lang.parser.psi.*;
 
-public class IdrPsiIfExpressionImpl extends IdrPsiExpressionImpl implements IdrPsiIfExpression {
+public class IdrPsiIfThenBranchImpl extends ASTWrapperPsiElement implements IdrPsiIfThenBranch {
 
-  public IdrPsiIfExpressionImpl(@NotNull ASTNode node) {
+  public IdrPsiIfThenBranchImpl(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull IdrPsiVisitor visitor) {
-    visitor.visitIfExpression(this);
+    visitor.visitIfThenBranch(this);
   }
 
   @Override
@@ -31,18 +31,6 @@ public class IdrPsiIfExpressionImpl extends IdrPsiExpressionImpl implements IdrP
   @Nullable
   public IdrPsiExpression getExpression() {
     return findChildByClass(IdrPsiExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public IdrPsiIfElseBranch getIfElseBranch() {
-    return findChildByClass(IdrPsiIfElseBranch.class);
-  }
-
-  @Override
-  @Nullable
-  public IdrPsiIfThenBranch getIfThenBranch() {
-    return findChildByClass(IdrPsiIfThenBranch.class);
   }
 
 }

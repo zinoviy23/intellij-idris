@@ -46,5 +46,7 @@ class IdrFileParserTest : ParsingTestCase("parser", "idr", true, IdrParserDefini
 
     fun testDataWithSpaces() = doTest(true)
 
+    fun testWeirdIndentationExpression() = doTest(true)
+
     override fun getTestDataPath() = "src/test/testData"
 }

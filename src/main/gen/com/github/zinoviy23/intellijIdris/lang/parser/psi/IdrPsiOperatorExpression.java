@@ -10,4 +10,7 @@ public interface IdrPsiOperatorExpression extends IdrPsiExpression {
   @NotNull
   List<IdrPsiExpression> getExpressionList();
 
+  @NotNull
+  List<IdrPsiOperatorElement> getOperatorElementList();
+
 }

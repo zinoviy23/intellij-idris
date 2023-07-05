@@ -36,10 +36,6 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitEscapedFunctionCallExpression(@NotNull IdrPsiEscapedFunctionCallExpression o) {
-    visitExpression(o);
-  }
-
   public void visitEscapedNameId(@NotNull IdrPsiEscapedNameId o) {
     visitPsiElement(o);
   }
@@ -85,8 +81,16 @@ public class IdrPsiVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIfElseBranch(@NotNull IdrPsiIfElseBranch o) {
+    visitPsiElement(o);
+  }
+
   public void visitIfExpression(@NotNull IdrPsiIfExpression o) {
     visitExpression(o);
+  }
+
+  public void visitIfThenBranch(@NotNull IdrPsiIfThenBranch o) {
+    visitPsiElement(o);
   }
 
   public void visitImplicitArgumentPattern(@NotNull IdrPsiImplicitArgumentPattern o) {
@@ -126,6 +130,10 @@ public class IdrPsiVisitor extends PsiElementVisitor {
   }
 
   public void visitOperatorDeclaration(@NotNull IdrPsiOperatorDeclaration o) {
+    visitPsiElement(o);
+  }
+
+  public void visitOperatorElement(@NotNull IdrPsiOperatorElement o) {
     visitPsiElement(o);
   }
 
