@@ -5,6 +5,10 @@ import com.intellij.lang.PsiBuilder
 import com.intellij.lang.parser.GeneratedParserUtilBase
 import com.intellij.openapi.util.Key
 
+/**
+ * Some parser utils for parsing Idris.
+ * See Idris [parser](https://github.com/idris-lang/Idris-dev/tree/master/src/Idris/Parser) source code
+ */
 @Suppress("UNUSED_PARAMETER")
 internal object IdrParserUtil : GeneratedParserUtilBase() {
     @JvmStatic
